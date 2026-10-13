@@ -147,18 +147,21 @@ function facts(r){
   r.conditions||""].filter(Boolean).map(function(s){return"<small>"+esc(s)+"</small>"}).join("")
   +(r.source?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":"");
 }
-function result(icon,label,r,v,unit){
+function result(R,c,f,icon,label,unit){
+ var r=best(R,c,f),v=r&&f(r),o={};
+ R.forEach(function(x){if(r&&x.city===c&&x.branch!==r.branch&&f(x)!==null&&Math.abs(f(x)-v)<1e-9)o[x.branch]=1});
+ var n=Object.keys(o).length;
  return'<div class="row">'+ic(icon)+"<span><small>"+label+"</small>"+(r
-  ?'<div class="big">'+eur(v)+unit+"</div><b>"+esc(r.brand+" "+r.product)+"</b><small>"+esc(r.chain+" · "+r.branch+" · "+r.address)+"</small>"+facts(r)
+  ?'<div class="big">'+eur(v)+unit+"</div><b>"+esc(r.brand+" "+r.product)+"</b><small>"+esc(r.chain+" · "+r.branch+" · "+r.address)+"</small>"
+   +(n?"<small>Same price at "+n+" other "+esc(c)+" branch"+(n>1?"es":"")+" (see full list)</small>":"")+facts(r)
   :"<b>No verified price available</b>")+"</span></div>";
 }
 function render(d){
  var R=d.records||[];
  $("cities").innerHTML=["Garching","Munich"].map(function(c){
-  var s=best(R,c,single),l=best(R,c,perL);
   return'<section class="card"><div class="row head">'+ic("pin")+"<span><h2>"+c+"</h2></span></div>"
-   +result("bot","Cheapest single bottle/can · incl. deposit",s,s&&single(s),"")
-   +result("lit","Cheapest per litre · excl. deposit",l,l&&perL(l)," / L")+"</section>";
+   +result(R,c,single,"bot","Cheapest single bottle/can · incl. deposit","")
+   +result(R,c,perL,"lit","Cheapest per litre · excl. deposit"," / L")+"</section>";
  }).join("");
  var D=(d.demo||[]).slice().sort(function(a,b){return a.price-b.price});
  $("demo").innerHTML=D.length?"<small>Hypothetical prices for 0.5 L single containers, excluding deposit. Not verified, not checked today and not confirmed in any branch — never real offers.</small>"
@@ -191,7 +194,6 @@ f.onsubmit=function(e){
  if(ph&&!/^image\/(jpeg|png)$/.test(ph.type))E.push("Photo: please attach a JPEG or PNG image.");
  if(ph&&ph.size>10485760)E.push("Photo: the file is "+(ph.size/1048576).toFixed(1)+" MB; the limit is 10 MB.");
  if(f.Price_refers_to.value==="Individual container"&&f.Containers.value&&+f.Containers.value!==1)E.push("Number of containers must be 1 when the price is for one bottle/can.");
- if(f.Date_observed.value>TODAY)E.push("Date observed cannot be in the future.");
  $("err").innerHTML=E.length?"<b>Please check:</b>"+E.map(function(s){return"<div>"+esc(s)+"</div>"}).join(""):"";
  if(E.length){e.preventDefault();$("err").scrollIntoView({block:"nearest"})}
 };
