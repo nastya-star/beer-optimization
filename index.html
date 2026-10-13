@@ -53,7 +53,8 @@ fieldset label{display:inline-flex;gap:.35rem;margin-right:1rem;font-size:.9rem}
 input:not([type=radio]),select,textarea{display:block;width:100%;margin-top:.3rem;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.55rem .7rem}
 .two{display:grid;grid-template-columns:1fr 1fr;gap:0 .7rem}
 .opt{color:var(--mute)}
-.hp{display:none}
+.hp{display:none!important}
+.two label{display:flex;flex-direction:column;justify-content:flex-end}
 #err:not(:empty){border:1px solid var(--acc);color:var(--acc);border-radius:.6rem;padding:.6rem .8rem;margin-bottom:.9rem;font-size:.85rem}
 .fh{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem}
 .fh button{padding:.35rem .6rem}
