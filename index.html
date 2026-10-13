@@ -39,6 +39,10 @@ small,.m{display:block;color:var(--mute);font-size:.8rem;overflow-wrap:anywhere}
 .meta small,.list small{font-size:.76rem}
 .num{font-variant-numeric:tabular-nums}
 .tag{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:99px;padding:0 .5rem;font-size:.66rem;letter-spacing:.12em;vertical-align:middle;font-weight:500}
+.map{display:flex;gap:.3rem;align-items:flex-start;margin-top:.15rem;color:var(--ic);font-size:.8rem;text-decoration:underline;text-decoration-color:var(--mute);text-decoration-thickness:1px;text-underline-offset:3px}
+.map span{flex:0 1 auto}
+.map:hover{color:var(--fg);text-decoration-color:currentColor}
+.map svg{width:13px;height:13px;margin-top:.15rem;stroke:currentColor}
 .src{display:inline-flex;align-items:center;gap:.2rem;color:var(--mute);font-size:.76rem;margin-top:.15rem}
 .rep{background:var(--tile);border:1px solid var(--line);border-radius:1.1rem;padding:1.3rem 1.15rem;margin:1.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.9rem 1rem;align-items:center}
 .rep>span{flex:1 1 14rem}
@@ -173,12 +177,20 @@ function facts(r){
   +(r.source_type==="shelf_photo"?"<small>Verified from shelf-label photo</small>"
    :(r.source_type==="retailer_website"||r.source_type==="official_online"||!r.source_type)&&/^https:\/\//.test(r.source||"")?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":"");
 }
+/* Map link for a confirmed branch address: Apple Maps on iPhone/iPad, Google Maps elsewhere */
+function mapLink(r){
+ if(!r.address||!r.city||r.status!=="verified")return"<small>"+esc(r.address||"")+"</small>";
+ var q=encodeURIComponent(r.chain+", "+r.address),
+  ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1,
+  u=ios?"https://maps.apple.com/?q="+q:"https://www.google.com/maps/search/?api=1&query="+q;
+ return'<a class="map" href="'+u+'" target="_blank" rel="noopener" aria-label="Open '+esc(r.branch+", "+r.address)+' in maps (new tab)">'+ic("pin")+"<span>"+esc(r.address)+"</span>"+ic("ar")+"</a>";
+}
 function result(R,c,f,icon,label,note,unit){
  var r=best(R,c,f),v=r&&f(r),o={};
  R.forEach(function(x){if(r&&x.city===c&&x.branch!==r.branch&&f(x)!==null&&Math.abs(f(x)-v)<1e-9)o[x.branch]=1});
  var n=Object.keys(o).length;
  return'<div class="tile"><div class="tl">'+ic(icon,"s")+label+"</div>"+(r
-  ?'<div class="price">'+eur(v)+(unit?"<span>"+unit+"</span>":"")+"</div><small>"+note+"</small><b>"+esc(r.brand+" "+r.product)+"</b><small>"+esc(r.chain+" · "+r.branch)+"</small><small>"+esc(r.address)+"</small>"
+  ?'<div class="price">'+eur(v)+(unit?"<span>"+unit+"</span>":"")+"</div><small>"+note+"</small><b>"+esc(r.brand+" "+r.product)+"</b><small>"+esc(r.chain+" · "+r.branch)+"</small>"+mapLink(r)
    +(n?"<small>Same price at "+n+" other "+esc(c)+" branch"+(n>1?"es":"")+"</small>":"")+'<div class="meta">'+facts(r)+"</div>"
   :'<p class="empty">No verified prices yet</p><small>Nothing verified for '+esc(c)+" so far.</small>")+"</div>";
 }
