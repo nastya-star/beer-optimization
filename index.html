@@ -59,6 +59,10 @@ details[open] summary .s{transform:rotate(90deg)}
 .list>div{padding:.8rem 1.15rem;border-top:1px solid var(--line)}
 .x{border-color:var(--line);color:var(--mute);letter-spacing:.04em;font-weight:400}
 .note{color:var(--mute);font-size:.75rem;text-align:center;margin:1.2rem .5rem 0}
+.how{display:flex;gap:.7rem;align-items:center;margin-top:1.8rem;padding:.9rem 1.15rem;text-decoration:none;font-size:.92rem}
+.how span{flex:1}
+.how:hover{background:var(--hover)}
+.how svg{width:16px;height:16px}
 #sent{display:flex;gap:.9rem;padding:1rem 1.15rem}
 #sent[hidden]{display:none}
 dialog{width:min(30rem,100%);max-height:100%;border:1px solid var(--line);border-radius:1.1rem;padding:0;background:var(--card);color:var(--fg)}
@@ -113,6 +117,7 @@ input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inh
 <details class="card"><summary><svg><use href="#lst"/></svg><span><b>All recorded Radler products <span id="cnt" class="num"></span></b><small>Including records excluded from the ranking</small></span><svg class="s"><use href="#chv"/></svg></summary><div class="list" id="all"></div></details>
 <p class="note" id="srcs"></p>
 <p class="note">Prices are recorded observations, not guaranteed current prices. Offers apply while stocks last; check in store. Rankings use only verified, publicly available prices; alcohol-free and non-Radler drinks are excluded.</p>
+<a class="card how" href="how-it-works.html"><span>Interested how it works?</span><svg><use href="#ar"/></svg></a>
 </main>
 
 <dialog id="dlg" aria-labelledby="ft">

@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>How It Works · Maximum Radler. Minimum Regret.</title>
+<meta name="description" content="The maths and code behind the cheapest-Radler finder for Garching and Munich.">
+<link rel="icon" href="data:,">
+<style>
+:root{--bg:#f3eefc;--fg:#2f2d36;--ic:#4a4654;--mute:#8a8596;--card:#fff;--tile:#f7f3fe;--line:#e6e0f1;--hover:#faf8ff;--acc:#6d5a9c}
+@media(prefers-color-scheme:dark){:root{--bg:#141218;--fg:#e9e7ee;--ic:#c9c5d2;--mute:#8f8b99;--card:#1c1a21;--tile:#24202c;--line:#2c2933;--hover:#221f28;--acc:#b9a6ec}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:42rem;margin:0 auto;padding:1.5rem 1rem 3rem}
+a{color:inherit;text-decoration-color:var(--mute);text-underline-offset:3px}
+a:hover{text-decoration-color:currentColor}
+:focus-visible{outline:1px solid var(--ic);outline-offset:2px}
+.back{display:inline-flex;align-items:center;gap:.3rem;color:var(--mute);font-size:.82rem;text-decoration:none}
+header{text-align:center;margin:2.4rem 0 2rem}
+h1,h2,h3{font-weight:500;letter-spacing:-.02em}
+h1{margin:0 0 .5rem;font-size:clamp(2rem,7.5vw,2.75rem);line-height:1.12;letter-spacing:-.03em}
+.sub{margin:0;color:var(--ic)}
+.card{background:var(--card);border:1px solid var(--line);border-radius:1.1rem;padding:1.3rem 1.25rem;margin-bottom:1rem}
+h2{margin:0 0 .8rem;font-size:1.35rem;line-height:1.25;display:flex;gap:.6rem;align-items:baseline}
+h2 span{color:var(--acc);font-size:.9rem;font-variant-numeric:tabular-nums;letter-spacing:.04em}
+h3{margin:1.4rem 0 .4rem;font-size:1.02rem}
+p{margin:0 0 .8rem}
+p:last-child{margin-bottom:0}
+.m{color:var(--mute);font-size:.88rem}
+svg{flex:none;width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+/* maths: native MathML, upright letters everywhere */
+math{font-family:"Cambria Math","STIX Two Math","Latin Modern Math",math;font-size:1.08em}
+math mi,math mo,math mtext,math mn{text-transform:none;font-style:normal}
+.eq{background:var(--tile);border-radius:.85rem;padding:1rem;margin:.8rem 0;text-align:center;overflow-x:auto}
+.eq.big math{font-size:1.45em}
+.lab{display:block;font-size:.72rem;letter-spacing:.12em;color:var(--mute);text-transform:uppercase;margin-bottom:.5rem}
+.two{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,15rem),1fr));gap:.7rem;margin:.8rem 0}
+.two .eq{margin:0}
+table{width:100%;border-collapse:collapse;font-size:.9rem;margin:.6rem 0 .9rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:.45rem .5rem;border-top:1px solid var(--line);vertical-align:top}
+th{font-weight:500;color:var(--mute);font-size:.8rem;border-top:0}
+td.c,th.c{text-align:center}
+.tw{overflow-x:auto}
+pre{background:var(--tile);border-radius:.85rem;padding:1rem 1.1rem;overflow-x:auto;font:13.5px/1.6 ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;margin:.8rem 0;tab-size:4}
+code{font-family:ui-monospace,"Cascadia Mono",Consolas,Menlo,monospace;font-size:.9em}
+pre .k{color:var(--acc);font-weight:600}
+pre .c{color:var(--mute)}
+ul{margin:.2rem 0 .8rem;padding-left:1.2rem}
+li{margin:.25rem 0}
+.flow{display:flex;flex-direction:column;align-items:center;gap:.25rem;margin:1rem 0 .4rem;font-size:.9rem;text-align:center}
+.flow .row{display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center}
+.node{background:var(--tile);border:1px solid var(--line);border-radius:.8rem;padding:.55rem .9rem;min-width:11rem}
+.node.k{border-color:var(--acc);color:var(--acc)}
+.flow svg{width:18px;height:18px;color:var(--mute)}
+.files{list-style:none;padding:0}
+.files li{display:flex;gap:.5rem;justify-content:space-between;border-top:1px solid var(--line);padding:.45rem 0;margin:0}
+.files a{display:inline-flex;gap:.25rem;align-items:center}
+.cta{display:inline-flex;gap:.45rem;align-items:center;border:1px solid var(--acc);color:var(--acc);border-radius:99px;padding:.65rem 1.2rem;text-decoration:none;font-weight:500;margin-top:.4rem}
+.cta:hover{background:var(--hover)}
+.end{background:var(--tile)}
+</style>
+</head>
+<body>
+<svg hidden>
+<symbol id="ar" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+<symbol id="bk" viewBox="0 0 24 24"><path d="M17 17 7 7M15 7H7v8"/></symbol>
+<symbol id="dn" viewBox="0 0 24 24"><path d="M12 4v15M6.5 13.5 12 19l5.5-5.5"/></symbol>
+</svg>
+<main>
+<a class="back" href="./"><svg><use href="#bk"/></svg>Back to the Radler prices</a>
+<header><h1>How It Works</h1><p class="sub">The maths and the code behind Maximum Radler. Minimum Regret.</p></header>
+
+<section class="card" aria-labelledby="s1">
+<h2 id="s1"><span>01</span>Hi!</h2>
+<p>I'm Anastasiia, a mathematics student, and I've spent about four years working on mathematical optimization problems.</p>
+<p>Optimization problems come in all shapes and sizes. Sometimes, like here, the goal is simply to find the cheapest Radler and save a little money.</p>
+<p>Or we could make it more complicated. What if we wanted to minimize the cost of getting drunk <b>and</b> the distance from where we're standing right now? Why not? That's a perfectly good optimization problem too. (To be clear: that one is just an idea. This website doesn't do it.)</p>
+<p>But you're here to see how this particular project works. So here's a little background, the mathematical formulation, and how I actually built it.</p>
+</section>
+
+<section class="card" aria-labelledby="s2">
+<h2 id="s2"><span>02</span>The mathematical problem</h2>
+<p>At its core this is a <b>discrete price minimization problem</b>: there is a finite set of supermarket offers, and we pick the cheapest one. No calculus, no continuous variables, just a careful definition of what is allowed to compete.</p>
+<p>For each city we solve <b>two separate problems</b>: the cheapest single bottle or can, and the cheapest beverage per liter. They answer different questions, so they can (and sometimes do) have different winners.</p>
+
+<h3>Cities and sets</h3>
+<div class="eq"><math display="block"><mi>C</mi><mo>=</mo><mo>{</mo><mtext>Garching</mtext><mo>,</mo><mtext>&#8202;Munich</mtext><mo>}</mo><mo separator="true">,</mo><mspace width="1em"/><mi>c</mi><mo>∈</mo><mi>C</mi></math></div>
+<ul>
+<li><math><msub><mi>I</mi><mi>c</mi></msub></math> is the set of all eligible Radler offers in city <math><mi>c</mi></math>.</li>
+<li><math><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup></math> is the subset of <math><msub><mi>I</mi><mi>c</mi></msub></math> containing only offers for an individually purchasable single bottle or can, with a known deposit and no additional minimum purchase requirement.</li>
+</ul>
+<div class="eq"><math display="block"><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup><mo>⊆</mo><msub><mi>I</mi><mi>c</mi></msub></math></div>
+<p>Every single bottle is also an offer, but not every offer is a single bottle. For example:</p>
+<div class="tw"><table>
+<thead><tr><th>Offer</th><th class="c">in <math><msub><mi>I</mi><mi>c</mi></msub></math></th><th class="c">in <math><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup></math></th></tr></thead>
+<tbody>
+<tr><td>Lidl: one 0.5 L bottle</td><td class="c">yes</td><td class="c">yes</td></tr>
+<tr><td>Lidl: six 0.5 L bottles</td><td class="c">yes</td><td class="c">no</td></tr>
+<tr><td>REWE: one 0.5 L can</td><td class="c">yes</td><td class="c">yes</td></tr>
+</tbody></table></div>
+
+<h3>Parameters</h3>
+<p>Each offer is identified by an index <math><mi>i</mi></math>. For every offer we know:</p>
+<div class="tw"><table>
+<thead><tr><th>Symbol</th><th>Meaning</th></tr></thead>
+<tbody>
+<tr><td><math><msub><mi>α</mi><mi>i</mi></msub></math></td><td>Package price excluding deposit (€)</td></tr>
+<tr><td><math><msub><mi>β</mi><mi>i</mi></msub></math></td><td>Refundable deposit (Pfand) for the package (€)</td></tr>
+<tr><td><math><msub><mi>γ</mi><mi>i</mi></msub></math></td><td>Number of containers in the package</td></tr>
+<tr><td><math><msub><mi>δ</mi><mi>i</mi></msub></math></td><td>Volume per container (liters)</td></tr>
+<tr><td><math><msub><mi>ε</mi><mi>i</mi></msub></math></td><td>Individual purchase availability: 1 if one container can be bought on its own at this price, otherwise 0</td></tr>
+</tbody></table></div>
+<p>With these symbols the single-container set reads</p>
+<div class="eq"><math display="block"><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup><mo>=</mo><mo>{</mo><mi>i</mi><mo>∈</mo><msub><mi>I</mi><mi>c</mi></msub><mo>:</mo><msub><mi>ε</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn><mo>,</mo><mspace width=".4em"/><msub><mi>γ</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn><mo>}</mo></math></div>
+<p>where, in addition, the deposit <math><msub><mi>β</mi><mi>i</mi></msub></math> must be known and the offer must not require buying more than one container.</p>
+
+<div class="two">
+<div class="eq big"><span class="lab">Problem 1 · Minimum price per bottle</span><math display="block"><munder><mi>min</mi><mrow><mi>i</mi><mo>∈</mo><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup></mrow></munder><mspace width=".2em"/><mo>(</mo><msub><mi>α</mi><mi>i</mi></msub><mo>+</mo><msub><mi>β</mi><mi>i</mi></msub><mo>)</mo></math></div>
+<div class="eq big"><span class="lab">Problem 2 · Minimum price per liter</span><math display="block"><munder><mi>min</mi><mrow><mi>i</mi><mo>∈</mo><msub><mi>I</mi><mi>c</mi></msub></mrow></munder><mspace width=".2em"/><mfrac><msub><mi>α</mi><mi>i</mi></msub><mrow><msub><mi>γ</mi><mi>i</mi></msub><mo>&#8290;</mo><msub><mi>δ</mi><mi>i</mi></msub></mrow></mfrac></math></div>
+</div>
+<p><b>Problem 1</b> looks for the cheapest individually purchasable bottle or can, <b>including</b> the refundable Pfand: what you actually pay at the till for one Radler.</p>
+<p><b>Problem 2</b> looks for the lowest price per liter of beverage, <b>excluding</b> Pfand (you get the deposit back, after all). Single containers and multipacks both compete here.</p>
+<p class="m">Example with the shelf prices observed on 13 October 2026 at Lidl Schleißheimer Straße: the single bottle gives <math><mn>0.45</mn><mo>+</mo><mn>0.25</mn><mo>=</mo><mn>0.70</mn></math>&nbsp;€ for Problem 1, while the six-pack gives <math><mn>2.69</mn><mo>/</mo><mo>(</mo><mn>6</mn><mo>·</mo><mn>0.5</mn><mo>)</mo><mo>≈</mo><mn>0.897</mn></math>&nbsp;€/L for Problem 2, just ahead of the single bottle's 0.90 €/L.</p>
+</section>
+
+<section class="card" aria-labelledby="s3">
+<h2 id="s3"><span>03</span>Algorithm</h2>
+<p>Because every set is finite (a few dozen offers at most), the website simply checks them all. This is what <a href="https://github.com/nastya-star/beer-optimization/blob/main/index.html">index.html</a> does every time the page loads:</p>
+<pre><code><span class="k">read</span> records from data.json
+
+<span class="k">for each</span> city c <span class="k">in</span> {Garching, Munich}:
+    I_c  ← { r : r.city = c <span class="k">and</span> eligible(r) }
+    I*_c ← { r ∈ I_c : r.single <span class="k">and</span> r.count = 1
+                      <span class="k">and</span> r.min_qty ≤ 1 <span class="k">and</span> r.deposit is known }
+
+    best1 ← offer in I*_c with smallest  α + β         <span class="c"># price + deposit</span>
+    best2 ← offer in I_c  with smallest  α / (γ · δ)   <span class="c"># price per liter</span>
+                                        <span class="c"># ties: most recent observation wins</span>
+    <span class="k">show</span> best1 and best2 with branch, address and map link
+         (or "No verified prices yet" if the set is empty)
+
+eligible(r):
+    r is an alcoholic Radler                   <span class="c"># no alcohol-free, no other beer mixes</span>
+    <span class="k">and</span> r.status = verified                    <span class="c"># no unverified, personalized or online-only reference prices</span>
+    <span class="k">and</span> (r is not a loyalty price <span class="k">or</span> the discount is public)
+    <span class="k">and</span> valid_from ≤ today ≤ valid_to          <span class="c"># expired or future offers are skipped</span></code></pre>
+<p>In code, this is plain JavaScript: <code>filter</code> builds the sets, <code>sort</code> orders them by the objective, and the first element is the minimum. There is <b>no</b> linear or mixed-integer programming solver involved, and none is needed: a finite minimum can be found by comparison.</p>
+<p><b>Complexity.</b> With <math><mi>n</mi></math> records in total, each of the four searches (2 cities × 2 problems) filters all records in <math><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></math> and sorts the remaining ones in <math><mi>O</mi><mo>(</mo><mi>n</mi><mspace width=".15em"/><mi>log</mi><mspace width=".15em"/><mi>n</mi><mo>)</mo></math>, so a page load costs <math><mi>O</mi><mo>(</mo><mi>n</mi><mspace width=".15em"/><mi>log</mi><mspace width=".15em"/><mi>n</mi><mo>)</mo></math> time and <math><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></math> memory. A single linear scan would get it down to <math><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></math>, but with a dozen records the difference is a few microseconds; sorting keeps the tie-breaking rule simple.</p>
+</section>
+
+<section class="card" aria-labelledby="s4">
+<h2 id="s4"><span>04</span>Where the prices come from</h2>
+<ul>
+<li><b>Shelf-label photos.</b> Prices I (or visitors) photographed in a store. Visitors send photos through the "Report a different price" form; I review every photo by hand before anything is added. The photos themselves stay private and are never published on the website or in the repository.</li>
+<li><b>Official online prices.</b> Prices from a supermarket's own product page, such as ALDI Süd's.</li>
+<li><b>Automated Kaufland offers.</b> A small Python script reads Kaufland's public, store-level offer data for its Munich branches every day. The other chains can't be collected automatically in a permitted, reliable way (bot protection, no store-level prices online, or offers that only appear after choosing a store in the browser), so they stay manual.</li>
+</ul>
+<p>Not every price is allowed to win. Each record has a status:</p>
+<div class="tw"><table>
+<thead><tr><th>Kind of record</th><th>Ranked?</th></tr></thead>
+<tbody>
+<tr><td><b>Verified branch observation</b>: a shelf photo or a store-specific retailer offer, with a known branch address</td><td>Yes</td></tr>
+<tr><td><b>Official online reference price</b>: real and official, but not confirmed for a particular branch</td><td>No, listed only</td></tr>
+<tr><td><b>Expired offer</b>: the promotion's end date has passed</td><td>No, listed only</td></tr>
+<tr><td><b>Unverified or personalized price</b>: e.g. an app coupon only some people get</td><td>No, listed only</td></tr>
+</tbody></table></div>
+<p>Prices observed more than 14 days ago are flagged "may have changed", but they are <b>not</b> excluded automatically. A shelf price doesn't expire on a schedule, so it stays until a newer observation replaces it.</p>
+</section>
+
+<section class="card" aria-labelledby="s5">
+<h2 id="s5"><span>05</span>Implementation</h2>
+<div class="flow" role="img" aria-label="Flowchart: manual observations and automated collection feed data.json, which is validated and filtered, then Problem 1 and Problem 2 are solved and the cheapest offers are displayed.">
+<div class="row"><div class="node">Manual observations</div><div class="node">Automated collection</div></div>
+<svg><use href="#dn"/></svg>
+<div class="node k">data.json</div>
+<svg><use href="#dn"/></svg>
+<div class="node">Data validation and eligibility filtering</div>
+<svg><use href="#dn"/></svg>
+<div class="row"><div class="node">Problem 1</div><div class="node">Problem 2</div></div>
+<svg><use href="#dn"/></svg>
+<div class="node k">Cheapest offers displayed on the website</div>
+</div>
+<h3>Technologies</h3>
+<ul>
+<li><b>HTML and CSS</b> for the pages, with no frameworks, web fonts or images.</li>
+<li><b>Vanilla JavaScript</b> in the browser for eligibility filtering and both price calculations.</li>
+<li><b>JSON</b> (<code>data.json</code>) as the price database, edited by hand or by the collector.</li>
+<li><b>Python 3</b> for automatic collection and validation, using only the standard library: <code>urllib.request</code>, <code>json</code>, <code>re</code>, <code>html</code>, <code>datetime</code>, <code>pathlib</code> and <code>sys</code>.</li>
+<li><b>GitHub Actions</b> runs the collector every morning and re-validates <code>data.json</code> after every change; the collector only commits data that passes validation.</li>
+<li><b>GitHub Pages</b> hosts everything for free.</li>
+<li><b>FormSubmit</b> delivers the price reports and their photos to my inbox.</li>
+</ul>
+<h3>Source files</h3>
+<ul class="files">
+<li><a href="https://github.com/nastya-star/beer-optimization">Repository<svg><use href="#ar"/></svg></a><span class="m">nastya-star/beer-optimization</span></li>
+<li><a href="https://github.com/nastya-star/beer-optimization/blob/main/index.html">index.html<svg><use href="#ar"/></svg></a><span class="m">page, filtering, Problems 1 and 2</span></li>
+<li><a href="https://github.com/nastya-star/beer-optimization/blob/main/data.json">data.json<svg><use href="#ar"/></svg></a><span class="m">all price records</span></li>
+<li><a href="https://github.com/nastya-star/beer-optimization/blob/main/collector/collect.py">collector/collect.py<svg><use href="#ar"/></svg></a><span class="m">Kaufland collector and validator</span></li>
+<li><a href="https://github.com/nastya-star/beer-optimization/blob/main/.github/workflows/update.yml">.github/workflows/update.yml<svg><use href="#ar"/></svg></a><span class="m">daily schedule</span></li>
+</ul>
+</section>
+
+<section class="card" aria-labelledby="s6">
+<h2 id="s6"><span>06</span>What could come next</h2>
+<p>The current model is deliberately simple. These are <b>possible future extensions, not current features</b>:</p>
+<ul>
+<li>Finding the cheapest Radler within a given travel distance.</li>
+<li>Considering travel costs alongside the beverage price.</li>
+<li>Minimizing total spending for a given quantity of Radler (say, for a party).</li>
+<li>Multi-objective optimization trading off money against travel distance.</li>
+<li>Integer programming for combining package sizes under a budget.</li>
+</ul>
+</section>
+
+<section class="card end" aria-labelledby="s7">
+<h2 id="s7"><span>07</span>Have an optimization problem in mind?</h2>
+<p>I'm always happy to hear new ideas, whether they're serious mathematical challenges or something as ridiculous as optimizing beer purchases.</p>
+<p>Send me a message on LinkedIn, start it with <b>"I like beer"</b>, and tell me about the optimization problem you'd like to discuss.</p>
+<p>I'd love to hear it.</p>
+<a class="cta" href="https://www.linkedin.com/in/anastasiia-stepanenko-1a0871327/" target="_blank" rel="noopener">Let's talk optimization<svg><use href="#ar"/></svg></a>
+</section>
+
+<p style="text-align:center;margin-top:1.6rem"><a class="back" href="./"><svg><use href="#bk"/></svg>Back to the Radler prices</a></p>
+</main>
+</body>
+</html>
