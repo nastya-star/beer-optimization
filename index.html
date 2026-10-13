@@ -8,42 +8,61 @@
 <meta name="description" content="Cheapest alcoholic Radler in Garching and Munich: REWE, Lidl, Kaufland, ALDI Süd and Penny.">
 <link rel="icon" href="data:,">
 <style>
-:root{--bg:#f3eefc;--fg:#2f2d36;--ic:#4a4654;--mute:#8a8596;--card:#fdfcff;--line:#e6e0f1;--hover:#f8f5fe;--acc:#6d5a9c}
-@media(prefers-color-scheme:dark){:root{--bg:#141218;--fg:#e9e7ee;--ic:#c9c5d2;--mute:#8f8b99;--card:#1c1a21;--line:#2c2933;--hover:#221f28;--acc:#b9a6ec}}
+:root{--bg:#f3eefc;--fg:#2f2d36;--ic:#4a4654;--mute:#8a8596;--card:#fff;--tile:#f7f3fe;--line:#e6e0f1;--hover:#faf8ff;--acc:#6d5a9c}
+@media(prefers-color-scheme:dark){:root{--bg:#141218;--fg:#e9e7ee;--ic:#c9c5d2;--mute:#8f8b99;--card:#1c1a21;--tile:#24202c;--line:#2c2933;--hover:#221f28;--acc:#b9a6ec}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
-main{max-width:30rem;margin:0 auto;padding:1.5rem 1rem 3rem}
+main{max-width:36rem;margin:0 auto;padding:1.5rem 1rem 3rem}
 a{color:inherit}
 .back{display:inline-flex;align-items:center;gap:.3rem;color:var(--mute);font-size:.82rem;text-decoration:none}
-header{text-align:center;margin:2.2rem 0 2.2rem}
-header p{margin:0;color:var(--mute);font-size:.8rem;letter-spacing:.14em}
-h1{margin:.4rem 0 .5rem;font:italic 400 2.9rem/1.1 "Bodoni MT","Bodoni 72",Didot,"Didot LT STD",Georgia,"Times New Roman","Noto Serif",serif;letter-spacing:-.01em}
-h2{margin:0;font:italic 400 1.45rem/1.2 "Bodoni MT","Bodoni 72",Didot,Georgia,serif}
-.card{background:var(--card);border:1px solid var(--line);border-radius:1rem;overflow:hidden;margin-bottom:1rem}
-.row{display:flex;gap:.9rem;padding:.9rem 1.1rem;align-items:flex-start}
-.row+.row,.card>details>.row,.list>div{border-top:1px solid var(--line)}
-.head{align-items:center}
+header{text-align:center;margin:2.4rem 0}
+.lbl{margin:0;color:var(--mute);font-size:.72rem;letter-spacing:.18em}
+h1,h2,.empty{font-family:"Bodoni MT","Bodoni 72",Didot,"Didot LT STD",Georgia,"Times New Roman","Noto Serif",serif;font-style:italic;font-weight:400}
+h1{margin:.45rem 0 .35rem;font-size:3rem;line-height:1.1;letter-spacing:-.01em}
+.sub{margin:0;font-size:1rem;color:var(--ic)}
+.chains{margin-top:.6rem}
+h2{margin:0;font-size:1.5rem;line-height:1.2}
+.card{background:var(--card);border:1px solid var(--line);border-radius:1.1rem;margin-bottom:1rem}
+.ch{display:flex;gap:.6rem;align-items:center;padding:1rem 1.15rem .8rem}
+.tiles{display:grid;align-items:start;grid-template-columns:repeat(auto-fit,minmax(min(100%,10.5rem),1fr));gap:.6rem;padding:0 .75rem .75rem}
+.tile{background:var(--tile);border-radius:.85rem;padding:.9rem 1rem 1rem;min-width:0}
+.tl{display:flex;gap:.4rem;align-items:center;font-size:.72rem;letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
+.price{font-size:1.95rem;font-weight:500;line-height:1.1;margin:.55rem 0 .1rem;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
+.price span{font-size:.95rem;font-weight:400;color:var(--mute);margin-left:.2rem}
+.empty{font-size:1.25rem;margin:.7rem 0 .2rem;color:var(--ic)}
+.tile b{margin-top:.6rem}
+.meta{margin-top:.55rem;padding-top:.55rem;border-top:1px solid var(--line)}
 svg{flex:none;width:20px;height:20px;fill:none;stroke:var(--ic);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
 .s{width:14px;height:14px;stroke:var(--mute)}
-.row>span{flex:1;min-width:0}
 b{display:block;font-weight:500;font-size:.95rem}
 small,.m{display:block;color:var(--mute);font-size:.8rem;overflow-wrap:anywhere}
-.big{font-size:1.15rem;font-weight:500;margin:.15rem 0}
-.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:0 .5rem;font-size:.7rem;letter-spacing:.06em;color:var(--mute);vertical-align:middle}
-.demo .tag{color:var(--acc);border-color:var(--acc)}
-.src{display:inline-flex;align-items:center;gap:.2rem;color:var(--mute);font-size:.8rem}
-summary{display:flex;gap:.9rem;align-items:center;padding:.9rem 1.1rem;cursor:pointer;list-style:none}
+.meta small,.list small{font-size:.76rem}
+.num{font-variant-numeric:tabular-nums}
+.tag{display:inline-block;border:1px solid var(--acc);color:var(--acc);border-radius:99px;padding:0 .5rem;font-size:.66rem;letter-spacing:.12em;vertical-align:middle;font-weight:500}
+.src{display:inline-flex;align-items:center;gap:.2rem;color:var(--mute);font-size:.76rem;margin-top:.15rem}
+.rep{background:var(--tile);border:1px solid var(--line);border-radius:1.1rem;padding:1.3rem 1.15rem;margin:1.6rem 0 1rem;display:flex;flex-wrap:wrap;gap:.9rem 1rem;align-items:center}
+.rep>span{flex:1 1 14rem}
+.rep b{font-size:1rem}
+.rep>svg{width:24px;height:24px}
+button{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:.65rem 1.15rem;cursor:pointer;display:inline-flex;gap:.45rem;align-items:center}
+.pri{border-color:var(--acc);color:var(--acc);font-weight:500}
+.pri svg{stroke:var(--acc);width:16px;height:16px}
+button:hover,summary:hover{background:var(--hover)}
+:focus-visible{outline:1px solid var(--ic);outline-offset:2px}
+summary{display:flex;gap:.9rem;align-items:center;padding:1rem 1.15rem;cursor:pointer;list-style:none;border-radius:1.1rem}
 summary::-webkit-details-marker{display:none}
 summary span{flex:1}
 details[open] summary .s{transform:rotate(90deg)}
-.list>div{padding:.75rem 1.1rem}
-.x{color:var(--acc)}
-button,.btn{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:.7rem 1.2rem;cursor:pointer;display:inline-flex;gap:.5rem;align-items:center}
-button:hover,summary:hover{background:var(--hover)}
-:focus-visible{outline:1px solid var(--ic);outline-offset:2px}
-.c{text-align:center;margin:1.6rem 0}
-.note{color:var(--mute);font-size:.78rem;text-align:center;margin:1.5rem .5rem 0}
-dialog{width:min(30rem,100%);max-height:100%;border:1px solid var(--line);border-radius:1rem;padding:0;background:var(--card);color:var(--fg)}
+.list>div{padding:.8rem 1.15rem;border-top:1px solid var(--line)}
+.x{border-color:var(--line);color:var(--mute);letter-spacing:.04em;font-weight:400}
+.demo{margin-top:1.6rem;padding:1rem 1.15rem;font-size:.85rem}
+.demo b{font-size:.85rem}
+.demo ul{list-style:none;margin:.6rem 0 0;padding:0}
+.demo li{display:flex;justify-content:space-between;gap:1rem;padding:.3rem 0;border-top:1px solid var(--line);color:var(--ic);font-size:.82rem}
+.note{color:var(--mute);font-size:.75rem;text-align:center;margin:1.2rem .5rem 0}
+#sent{display:flex;gap:.9rem;padding:1rem 1.15rem}
+#sent[hidden]{display:none}
+dialog{width:min(30rem,100%);max-height:100%;border:1px solid var(--line);border-radius:1.1rem;padding:0;background:var(--card);color:var(--fg)}
 dialog::backdrop{background:#0006}
 form{padding:1.2rem 1.1rem}
 label,fieldset{display:block;margin:0 0 .85rem;font-size:.85rem}
@@ -57,7 +76,9 @@ input:not([type=radio]),select,textarea{display:block;width:100%;margin-top:.3re
 .two label{display:flex;flex-direction:column;justify-content:flex-end}
 #err:not(:empty){border:1px solid var(--acc);color:var(--acc);border-radius:.6rem;padding:.6rem .8rem;margin-bottom:.9rem;font-size:.85rem}
 .fh{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem}
-.fh button{padding:.35rem .6rem}
+.fh button{padding:.45rem}
+.fh svg{width:16px;height:16px}
+.c{text-align:center}
 </style>
 </head>
 <body>
@@ -68,25 +89,25 @@ input:not([type=radio]),select,textarea{display:block;width:100%;margin-top:.3re
 <symbol id="bot" viewBox="0 0 24 24"><path d="M10 3h4M10.5 3v4l-2 3v9.5c0 .8.7 1.5 1.5 1.5h4c.8 0 1.5-.7 1.5-1.5V10l-2-3V3M8.5 13h7"/></symbol>
 <symbol id="lit" viewBox="0 0 24 24"><path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/></symbol>
 <symbol id="lst" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></symbol>
-<symbol id="flk" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3M7.5 15h9"/></symbol>
-<symbol id="pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/></symbol>
+<symbol id="cam" viewBox="0 0 24 24"><path d="M3.5 8.5C3.5 7.7 4.2 7 5 7h2.5L9 5h6l1.5 2H19c.8 0 1.5.7 1.5 1.5v9c0 .8-.7 1.5-1.5 1.5H5c-.8 0-1.5-.7-1.5-1.5z"/><circle cx="12" cy="13" r="3.3"/></symbol>
 <symbol id="chv" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+<symbol id="cls" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
 </svg>
 <main>
 <a class="back" href="https://nastya-star.github.io/"><svg class="s"><use href="#bk"/></svg>Anastasiia</a>
-<header><p>Beer Price Optimization</p><h1>Cheapest Radler</h1><small>Garching &amp; Munich · REWE · Lidl · Kaufland · ALDI Süd · Penny</small></header>
-<div id="sent" class="card" hidden><div class="row"><svg><use href="#pen"/></svg><span><b>Thank you — report received</b><small>It will be reviewed manually. Public prices don't change automatically.</small></span></div></div>
+<header><p class="lbl">BEER PRICE OPTIMIZATION</p><h1>Radler Finder</h1><p class="sub">The best beer deals, mathematically.</p><small class="chains">Garching &amp; Munich · REWE · Lidl · Kaufland · ALDI Süd · Penny</small></header>
+<div id="sent" class="card" role="status" hidden><svg><use href="#cam"/></svg><span><b>Report submitted</b><small>Thank you. Your report was passed to the form service; if it arrives, it will be reviewed by hand. Prices on this page don't change automatically.</small></span></div>
 <div id="cities"><p class="note">Loading prices…</p></div>
-<section class="card demo" aria-label="Demo data"><div class="row head"><svg><use href="#flk"/></svg><span><b>Simulated prices <span class="tag">DEMO</span></b></span></div><div class="row"><span id="demo"></span></div></section>
-<details class="card"><summary><svg><use href="#lst"/></svg><span><b>All recorded Radler products <span id="cnt"></span></b><small>Including records excluded from the ranking</small></span><svg class="s"><use href="#chv"/></svg></summary><div class="list" id="all"></div></details>
-<div class="c"><button type="button" id="open"><svg><use href="#pen"/></svg>Report a different price</button></div>
+<section class="rep" aria-labelledby="rt"><svg><use href="#cam"/></svg><span><b id="rt">Seen a different price?</b><small>Photograph the shelf tag and send it in. Every report is checked by hand.</small></span><button type="button" class="pri" id="open">Report a different price<svg><use href="#ar"/></svg></button></section>
+<details class="card"><summary><svg><use href="#lst"/></svg><span><b>All recorded Radler products <span id="cnt" class="num"></span></b><small>Including records excluded from the ranking</small></span><svg class="s"><use href="#chv"/></svg></summary><div class="list" id="all"></div></details>
+<section class="card demo" aria-label="Demo data"><b>Simulated prices <span class="tag">DEMO</span></b><div id="demo"></div></section>
 <p class="note" id="srcs"></p>
 <p class="note">Prices are recorded observations, not guaranteed current prices. Offers apply while stocks last; check in store. Rankings use only verified, publicly available prices; alcohol-free and non-Radler drinks are excluded.</p>
 </main>
 
 <dialog id="dlg" aria-labelledby="ft">
 <form id="f" action="https://formsubmit.co/stepanenkon010@gmail.com" method="POST" enctype="multipart/form-data" novalidate>
-<div class="fh"><h2 id="ft">Report a price</h2><button type="button" id="close" aria-label="Close">✕</button></div>
+<div class="fh"><h2 id="ft">Report a price</h2><button type="button" id="close" aria-label="Close"><svg><use href="#cls"/></svg></button></div>
 <p class="m" style="margin:0 0 1rem">Saw a different Radler price? Fill in what's on the shelf tag and attach a photo of it. Reports are checked by hand before anything changes on this page.</p>
 <div id="err" role="alert"></div>
 <input type="hidden" name="_subject" value="New Radler Price Information">
@@ -148,28 +169,28 @@ function facts(r){
   r.conditions||""].filter(Boolean).map(function(s){return"<small>"+esc(s)+"</small>"}).join("")
   +(r.source?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":"");
 }
-function result(R,c,f,icon,label,unit){
+function result(R,c,f,icon,label,note,unit){
  var r=best(R,c,f),v=r&&f(r),o={};
  R.forEach(function(x){if(r&&x.city===c&&x.branch!==r.branch&&f(x)!==null&&Math.abs(f(x)-v)<1e-9)o[x.branch]=1});
  var n=Object.keys(o).length;
- return'<div class="row">'+ic(icon)+"<span><small>"+label+"</small>"+(r
-  ?'<div class="big">'+eur(v)+unit+"</div><b>"+esc(r.brand+" "+r.product)+"</b><small>"+esc(r.chain+" · "+r.branch+" · "+r.address)+"</small>"
-   +(n?"<small>Same price at "+n+" other "+esc(c)+" branch"+(n>1?"es":"")+" (see full list)</small>":"")+facts(r)
-  :"<b>No verified price available</b>")+"</span></div>";
+ return'<div class="tile"><div class="tl">'+ic(icon,"s")+label+"</div>"+(r
+  ?'<div class="price">'+eur(v)+(unit?"<span>"+unit+"</span>":"")+"</div><small>"+note+"</small><b>"+esc(r.brand+" "+r.product)+"</b><small>"+esc(r.chain+" · "+r.branch)+"</small><small>"+esc(r.address)+"</small>"
+   +(n?"<small>Same price at "+n+" other "+esc(c)+" branch"+(n>1?"es":"")+"</small>":"")+'<div class="meta">'+facts(r)+"</div>"
+  :'<p class="empty">No verified prices yet</p><small>Nothing verified for '+esc(c)+" so far.</small>")+"</div>";
 }
 function render(d){
  var R=d.records||[];
  $("cities").innerHTML=["Garching","Munich"].map(function(c){
-  return'<section class="card"><div class="row head">'+ic("pin")+"<span><h2>"+c+"</h2></span></div>"
-   +result(R,c,single,"bot","Cheapest single bottle/can · incl. deposit","")
-   +result(R,c,perL,"lit","Cheapest per litre · excl. deposit"," / L")+"</section>";
+  return'<section class="card" aria-label="'+c+'"><div class="ch">'+ic("pin")+"<h2>"+c+'</h2></div><div class="tiles">'
+   +result(R,c,single,"bot","Cheapest single","incl. deposit","")
+   +result(R,c,perL,"lit","Best per liter","excl. deposit","/ L")+"</div></section>";
  }).join("");
  var D=(d.demo||[]).slice().sort(function(a,b){return a.price-b.price});
- $("demo").innerHTML=D.length?"<small>Hypothetical prices for 0.5 L single containers, excluding deposit. Not verified, not checked today and not confirmed in any branch — never real offers.</small>"
-  +D.map(function(r,i){return"<small>"+(i?"":"<b>Cheapest (demo): </b>")+esc(r.chain)+" — "+eur(r.price)+" + deposit · "+eur(r.price/(r.count*r.volume_l))+" / L</small>"}).join(""):"";
+ $("demo").innerHTML=D.length?"<small>Hypothetical example prices for 0.5 L single containers, excluding deposit. Not verified, not checked today, not confirmed in any branch: not real offers and never used as results.</small><ul>"
+  +D.map(function(r){return"<li><span>"+esc(r.chain)+'</span><span class="num">'+eur(r.price)+" + deposit · "+eur(r.price/(r.count*r.volume_l))+" / L</span></li>"}).join("")+"</ul>":"";
  $("cnt").textContent="("+R.length+")";
  $("all").innerHTML=R.length?R.slice().sort(function(a,b){return(a.city+a.chain).localeCompare(b.city+b.chain)}).map(function(r){
-  var x=reason(r);return"<div><b>"+esc(r.brand+" "+r.product)+(x?' <span class="tag x">excluded: '+esc(x)+"</span>":"")+"</b><small>"+esc(r.city+" · "+r.chain+" · "+r.branch)+"</small>"+facts(r)+"</div>";
+  var x=reason(r);return"<div><b>"+esc(r.brand+" "+r.product)+(x?' <span class="tag x">Excluded: '+esc(x)+"</span>":"")+"</b><small>"+esc(r.city+" · "+r.chain+" · "+r.branch)+"</small>"+facts(r)+"</div>";
  }).join(""):"<div><small>No real price records yet.</small></div>";
  var S=d.sources||{},on=[],off=[];
  for(var k in S)(S[k].enabled?on:off).push(k.replace("_sued"," Süd").replace(/^./,function(c){return c.toUpperCase()}).replace("Rewe","REWE").replace("Aldi","ALDI")+(S[k].enabled?" (last checked "+(S[k].last_success||"never")+(S[k].last_error?"; last attempt failed":"")+")":""));
