@@ -172,9 +172,9 @@ function facts(r){
  var t=r.price_type==="regular"?"Regular price":r.price_type==="loyalty"?"Loyalty-app price":"Promotion",a=days(r.observed);
  return[pack(r)+" · "+eur(r.price)+(r.count>1?" per package":"")+" · deposit "+(typeof r.deposit==="number"?eur(r.deposit):"unknown"),
   t+(r.valid_from||r.valid_to?" · valid "+(r.valid_from||"…")+" – "+(r.valid_to||"…"):"")+((r.min_qty||1)>1?" · min. "+r.min_qty:""),
-  "Observed "+r.observed+(a>14?" ("+a+" days ago — may have changed)":"")+" · "+(r.origin?"automatic":"manual")+" record",
+  "Observed "+r.observed+(a>14?" ("+a+" days ago — may have changed)":"")+" · "+(r.origin&&r.origin!=="manual"?"automatic":"manual")+" record",
   r.conditions||""].filter(Boolean).map(function(s){return"<small>"+esc(s)+"</small>"}).join("")
-  +(r.source?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":"");
+  +(/^https?:\/\//.test(r.source||"")?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":r.source?"<small>Source: "+esc(r.source)+"</small>":"");
 }
 function result(R,c,f,icon,label,note,unit){
  var r=best(R,c,f),v=r&&f(r),o={};
