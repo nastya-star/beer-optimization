@@ -65,19 +65,31 @@ details[open] summary .s{transform:rotate(90deg)}
 dialog{width:min(30rem,100%);max-height:100%;border:1px solid var(--line);border-radius:1.1rem;padding:0;background:var(--card);color:var(--fg)}
 dialog::backdrop{background:#0006}
 form{padding:1.2rem 1.1rem}
-label,fieldset{display:block;margin:0 0 .85rem;font-size:.85rem}
-fieldset{border:0;padding:0}
-legend{padding:0;margin-bottom:.3rem}
-fieldset label{display:inline-flex;gap:.35rem;margin-right:1rem;font-size:.9rem}
-input:not([type=radio]),select,textarea{display:block;width:100%;margin-top:.3rem;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.55rem .7rem}
-.two{display:grid;grid-template-columns:1fr 1fr;gap:0 .7rem}
-.opt{color:var(--mute)}
+label,fieldset{display:block;margin:0 0 .9rem;font-size:.85rem}
+fieldset{border:0;padding:0;min-width:0}
+legend{padding:0;margin-bottom:.35rem}
+input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.65rem .75rem}
 .hp{display:none!important}
-.two label{display:flex;flex-direction:column;justify-content:flex-end}
+.vh{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.pick{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.pick label{margin:0;display:flex;gap:.45rem;justify-content:center;align-items:center;padding:.8rem .5rem;border:1px solid var(--line);border-radius:.8rem;background:var(--tile);cursor:pointer;font-size:.88rem;text-align:center}
+.pick label:hover{background:var(--hover)}
+.pick label:focus-within{outline:1px solid var(--ic);outline-offset:2px}
+.ph{list-style:none;margin:.6rem 0 0;padding:0}
+.ph li{display:flex;gap:.7rem;align-items:center;padding:.4rem 0;border-top:1px solid var(--line);font-size:.82rem}
+.ph img{width:2.6rem;height:2.6rem;object-fit:cover;border-radius:.45rem;flex:none}
+.ph span{flex:1;min-width:0;overflow-wrap:anywhere}
+.ph button{padding:.35rem}
+.ph svg,.pick svg{width:16px;height:16px}
+#phs{margin-top:.45rem}
+#phs.over{color:var(--acc)}
+#fb input{margin:.3rem 0}
 #err:not(:empty){border:1px solid var(--acc);color:var(--acc);border-radius:.6rem;padding:.6rem .8rem;margin-bottom:.9rem;font-size:.85rem}
-.fh{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem}
+.fh{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.1rem}
+.fh .m{margin-top:.25rem;font-size:.88rem}
 .fh button{padding:.45rem}
 .fh svg{width:16px;height:16px}
+.pri:disabled{opacity:.6;cursor:default}
 .c{text-align:center}
 </style>
 </head>
@@ -107,27 +119,22 @@ input:not([type=radio]),select,textarea{display:block;width:100%;margin-top:.3re
 
 <dialog id="dlg" aria-labelledby="ft">
 <form id="f" action="https://formsubmit.co/stepanenkon010@gmail.com" method="POST" enctype="multipart/form-data" novalidate>
-<div class="fh"><h2 id="ft">Report a price</h2><button type="button" id="close" aria-label="Close"><svg><use href="#cls"/></svg></button></div>
-<p class="m" style="margin:0 0 1rem">Saw a different Radler price? Fill in what's on the shelf tag and attach a photo of it. Reports are checked by hand before anything changes on this page.</p>
+<div class="fh"><span><h2 id="ft">Found a Radler price?</h2><span class="m">Take a photo. We'll handle the rest.</span></span><button type="button" id="close" aria-label="Close"><svg><use href="#cls"/></svg></button></div>
 <div id="err" role="alert"></div>
 <input type="hidden" name="_subject" value="New Radler Price Information">
 <input type="hidden" name="_template" value="table">
 <input type="hidden" name="_next" value="https://nastya-star.github.io/beer-optimization/?sent=1">
+<input type="hidden" name="Submitted_at" id="ts">
 <input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
-<label>Supermarket<select name="Supermarket" required><option value="">Choose…</option><option>REWE</option><option>Lidl</option><option>Kaufland</option><option>ALDI Süd</option><option>Penny</option></select></label>
-<label>Store address / location<input name="Store" required maxlength="200" placeholder="Street and city, or store name"></label>
-<label>Radler brand / product<input name="Product" required maxlength="120" placeholder="e.g. Paulaner Natur-Radler"></label>
-<div class="two"><label>Price (€)<input name="Price_EUR" type="number" inputmode="decimal" step="0.01" min="0.01" max="500" required></label>
-<label>Date observed<input name="Date_observed" type="date" required></label></div>
-<fieldset><legend>The price is for</legend><label><input type="radio" name="Price_refers_to" value="Individual container" required>one bottle/can</label><label><input type="radio" name="Price_refers_to" value="Whole package">the whole package</label></fieldset>
-<div class="two"><label>Volume per container (L)<input name="Volume_L" type="number" inputmode="decimal" step="0.01" min="0.1" max="5" required placeholder="0.5"></label>
-<label>Number of containers<input name="Containers" type="number" inputmode="numeric" step="1" min="1" max="48" required placeholder="1"></label></div>
-<label>Photo of the shelf price tag (JPEG/PNG, max 10 MB)<input name="attachment" type="file" accept="image/jpeg,image/png" required></label>
-<div class="two"><label>Deposit (€) <span class="opt">optional</span><input name="Deposit_EUR" type="number" inputmode="decimal" step="0.01" min="0" max="20"></label>
-<label>Price type <span class="opt">optional</span><select name="Price_type"><option value="">—</option><option>Regular price</option><option>Promotion</option><option>Loyalty-app discount</option></select></label></div>
-<label>Notes <span class="opt">optional</span><textarea name="Notes" rows="2" maxlength="1000" placeholder="e.g. conditions, minimum quantity, validity dates"></textarea></label>
-<p class="m">Privacy: this form is processed by the third-party service <a href="https://formsubmit.co/" rel="noopener" target="_blank">FormSubmit</a> (formsubmit.co), which emails your entries and photo to the site owner. No account needed; please don't include personal data. You may be asked to complete a captcha.</p>
-<div class="c" style="margin:1rem 0 0"><button type="submit">Send report</button></div>
+<label>Supermarket<select name="Supermarket" id="sm" required><option value="">Choose…</option><option>REWE</option><option>Lidl</option><option>Kaufland</option><option>ALDI Süd</option><option>Penny</option></select></label>
+<label>Store address<input name="Store_address" id="ad" required minlength="5" maxlength="200" autocomplete="street-address" placeholder="Street, postal code, city"></label>
+<fieldset><legend>Price tag photos</legend>
+<div class="pick" id="pick"><label><input class="vh" type="file" id="pcam" accept="image/jpeg,image/png" capture="environment"><svg><use href="#cam"/></svg>Take photo</label><label><input class="vh" type="file" id="plib" accept="image/jpeg,image/png" multiple><svg><use href="#lst"/></svg>Choose photos</label></div>
+<div id="fb" hidden><input type="file" name="photo_1" accept="image/jpeg,image/png" aria-label="Photo 1"><input type="file" name="photo_2" accept="image/jpeg,image/png" aria-label="Photo 2"><input type="file" name="photo_3" accept="image/jpeg,image/png" aria-label="Photo 3"></div>
+<ul class="ph" id="ph"></ul><small id="phs" aria-live="polite">JPG or PNG, up to 10 MB in total. Large photos are reduced automatically.</small>
+</fieldset>
+<p class="m">Privacy: reports are processed by the third-party service <a href="https://formsubmit.co/" rel="noopener" target="_blank">FormSubmit</a> (formsubmit.co), which emails the supermarket, address, submission time and photos to the site owner. No account needed; please keep people out of the photos. Your supermarket and address are remembered on this device only. You may be asked to complete a captcha.</p>
+<div class="c" style="margin-top:1rem"><button type="submit" class="pri" id="sb">Submit price</button></div>
 </form>
 </dialog>
 
@@ -199,26 +206,60 @@ function render(d){
 fetch("data.json",{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(render)
  .catch(function(){$("cities").innerHTML='<p class="note">Price data could not be loaded.</p>'});
 
-/* Report form */
-var dlg=$("dlg"),f=$("f");
+/* Report form: supermarket + address + photos. Each photo gets its own named file field
+   (FormSubmit supports several file inputs, 10 MB total). Nothing here touches data.json. */
+var dlg=$("dlg"),f=$("f"),sm=$("sm"),ad=$("ad"),sb=$("sb"),P=[],MAX=10485760,
+mb=function(b){return b<104858?Math.max(1,Math.round(b/1024))+" KB":(b/1048576).toFixed(1)+" MB"},
+ok=function(x){return/^image\/(jpeg|png)$/.test(x.type)},
+canDT=(function(){try{return!!new DataTransfer().items}catch(e){return false}})();
 if(/[?&]sent=1/.test(location.search))$("sent").hidden=false;
-f.Date_observed.max=TODAY;
+try{sm.value=localStorage.getItem("rf_sm")||"";ad.value=localStorage.getItem("rf_ad")||""}catch(e){}
+function keep(){try{localStorage.setItem("rf_sm",sm.value);localStorage.setItem("rf_ad",ad.value.trim())}catch(e){}}
+sm.onchange=ad.onchange=keep;
+if(canDT)[].forEach.call($("fb").querySelectorAll("input"),function(i){i.disabled=true});else{$("pick").hidden=true;$("fb").hidden=false}
 $("open").onclick=function(){dlg.showModal?dlg.showModal():dlg.setAttribute("open","")};
 $("close").onclick=function(){dlg.close?dlg.close():dlg.removeAttribute("open")};
+/* Re-encode large photos as JPEG (max 2000 px) so several fit under 10 MB; keep the original if not smaller */
+function shrink(file){return new Promise(function(res){
+ if(file.size<1.5e6)return res(file);
+ var u=URL.createObjectURL(file),im=new Image();
+ im.onload=function(){var k=Math.min(1,2000/Math.max(im.naturalWidth,im.naturalHeight)),c=document.createElement("canvas");
+  c.width=Math.round(im.naturalWidth*k);c.height=Math.round(im.naturalHeight*k);c.getContext("2d").drawImage(im,0,0,c.width,c.height);URL.revokeObjectURL(u);
+  c.toBlob(function(b){res(b&&b.size<file.size?new File([b],file.name.replace(/\.\w+$/,"")+".jpg",{type:"image/jpeg"}):file)},"image/jpeg",.85)};
+ im.onerror=function(){URL.revokeObjectURL(u);res(file)};im.src=u})}
+function draw(){
+ var t=P.reduce(function(a,x){return a+x.f.size},0);
+ $("ph").innerHTML=P.map(function(x,i){return'<li><img src="'+x.u+'" alt=""><span>'+esc(x.f.name)+"<small>"+mb(x.f.size)+'</small></span><button type="button" data-i="'+i+'" aria-label="Remove '+esc(x.f.name)+'"><svg><use href="#cls"/></svg></button></li>'}).join("");
+ $("phs").textContent=P.length?P.length+" photo"+(P.length>1?"s":"")+" · "+mb(t)+" of 10 MB":"JPG or PNG, up to 10 MB in total. Large photos are reduced automatically.";
+ $("phs").className=t>MAX?"over":"";
+}
+$("ph").onclick=function(e){var b=e.target.closest("button");if(b){URL.revokeObjectURL(P[b.dataset.i].u);P.splice(+b.dataset.i,1);draw()}};
+function add(){var inp=this,L=[].slice.call(inp.files),bad=L.filter(function(x){return!ok(x)});
+ $("err").innerHTML=bad.length?"<div>"+esc(bad.map(function(x){return x.name}).join(", "))+": only JPG or PNG images can be sent.</div>":"";
+ $("phs").textContent="Preparing photos…";
+ Promise.all(L.filter(ok).map(shrink)).then(function(F){F.forEach(function(x){P.push({f:x,u:URL.createObjectURL(x)})});inp.value="";draw()})}
+$("pcam").onchange=$("plib").onchange=add;
 f.onsubmit=function(e){
- var E=[],ph=f.attachment.files[0];
- [].forEach.call(f.elements,function(el){
-  el.setCustomValidity("");
-  if(el.name&&el.name[0]!=="_"&&!el.checkValidity()){var l=el.closest("fieldset")||el.closest("label");
-   var t=l.querySelector("legend")?l.querySelector("legend").textContent:l.firstChild.textContent;
-   if(E.join().indexOf(t)<0)E.push(t.trim()+": "+el.validationMessage)}
- });
- if(ph&&!/^image\/(jpeg|png)$/.test(ph.type))E.push("Photo: please attach a JPEG or PNG image.");
- if(ph&&ph.size>10485760)E.push("Photo: the file is "+(ph.size/1048576).toFixed(1)+" MB; the limit is 10 MB.");
- if(f.Price_refers_to.value==="Individual container"&&f.Containers.value&&+f.Containers.value!==1)E.push("Number of containers must be 1 when the price is for one bottle/can.");
+ e.preventDefault();
+ var E=[],F=canDT?P.map(function(x){return x.f}):[].slice.call(f.querySelectorAll("#fb input")).map(function(i){return i.files[0]}).filter(Boolean),
+  t=F.reduce(function(a,x){return a+x.size},0);
+ if(!sm.value)E.push("Choose the supermarket.");
+ if(ad.value.trim().length<5)E.push("Enter the store address (street, postal code, city).");
+ if(!F.length)E.push("Add at least one photo of the price tag.");
+ if(F.length>10)E.push("Please send at most 10 photos at once.");
+ if(F.some(function(x){return!ok(x)}))E.push("Photos must be JPG or PNG images.");
+ if(t>MAX)E.push("The photos total "+mb(t)+"; the limit is 10 MB. Remove a photo and send it separately.");
  $("err").innerHTML=E.length?"<b>Please check:</b>"+E.map(function(s){return"<div>"+esc(s)+"</div>"}).join(""):"";
- if(E.length){e.preventDefault();$("err").scrollIntoView({block:"nearest"})}
+ if(E.length){$("err").scrollIntoView({block:"nearest"});return}
+ keep();
+ var now=new Date();$("ts").value=now.toLocaleString("en-GB",{timeZone:"Europe/Berlin"})+" (Munich time) · "+now.toISOString();
+ if(canDT){[].forEach.call(f.querySelectorAll(".gen"),function(i){i.remove()});
+  F.forEach(function(x,i){var inp=document.createElement("input"),dt=new DataTransfer();inp.type="file";inp.name="photo_"+(i+1);inp.className="gen hp";dt.items.add(x);inp.files=dt.files;f.appendChild(inp)})}
+ else [].forEach.call(f.querySelectorAll("#fb input"),function(i){i.disabled=!i.files.length});
+ sb.disabled=true;sb.textContent="Sending…";
+ HTMLFormElement.prototype.submit.call(f);
 };
+addEventListener("pageshow",function(){sb.disabled=false;sb.textContent="Submit price"});
 </script>
 </body>
 </html>
