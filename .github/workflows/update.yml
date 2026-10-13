@@ -1,0 +1,25 @@
+name: Update prices
+on:
+  schedule: [{cron: "17 5 * * *"}]   # daily, ~07:17 Munich time
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [data.json, collector/**, .github/workflows/update.yml]
+permissions:
+  contents: write
+concurrency: update-prices
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Collect enabled sources and validate data.json
+        run: python3 collector/collect.py
+      - name: Publish validated changes
+        run: |
+          git diff --quiet data.json && exit 0
+          git config user.name "price-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Automatic price update $(date -u +%F)"
+          git push

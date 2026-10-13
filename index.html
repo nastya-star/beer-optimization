@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>Beer Price Optimization · Radler in Garching & Munich</title>
+<meta name="description" content="Cheapest alcoholic Radler in Garching and Munich: REWE, Lidl, Kaufland, ALDI Süd and Penny.">
+<link rel="icon" href="data:,">
+<style>
+:root{--bg:#f3eefc;--fg:#2f2d36;--ic:#4a4654;--mute:#8a8596;--card:#fdfcff;--line:#e6e0f1;--hover:#f8f5fe;--acc:#6d5a9c}
+@media(prefers-color-scheme:dark){:root{--bg:#141218;--fg:#e9e7ee;--ic:#c9c5d2;--mute:#8f8b99;--card:#1c1a21;--line:#2c2933;--hover:#221f28;--acc:#b9a6ec}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+main{max-width:30rem;margin:0 auto;padding:1.5rem 1rem 3rem}
+a{color:inherit}
+.back{display:inline-flex;align-items:center;gap:.3rem;color:var(--mute);font-size:.82rem;text-decoration:none}
+header{text-align:center;margin:2.2rem 0 2.2rem}
+header p{margin:0;color:var(--mute);font-size:.8rem;letter-spacing:.14em}
+h1{margin:.4rem 0 .5rem;font:italic 400 2.9rem/1.1 "Bodoni MT","Bodoni 72",Didot,"Didot LT STD",Georgia,"Times New Roman","Noto Serif",serif;letter-spacing:-.01em}
+h2{margin:0;font:italic 400 1.45rem/1.2 "Bodoni MT","Bodoni 72",Didot,Georgia,serif}
+.card{background:var(--card);border:1px solid var(--line);border-radius:1rem;overflow:hidden;margin-bottom:1rem}
+.row{display:flex;gap:.9rem;padding:.9rem 1.1rem;align-items:flex-start}
+.row+.row,.card>details>.row,.list>div{border-top:1px solid var(--line)}
+.head{align-items:center}
+svg{flex:none;width:20px;height:20px;fill:none;stroke:var(--ic);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
+.s{width:14px;height:14px;stroke:var(--mute)}
+.row>span{flex:1;min-width:0}
+b{display:block;font-weight:500;font-size:.95rem}
+small,.m{display:block;color:var(--mute);font-size:.8rem;overflow-wrap:anywhere}
+.big{font-size:1.15rem;font-weight:500;margin:.15rem 0}
+.tag{display:inline-block;border:1px solid var(--line);border-radius:99px;padding:0 .5rem;font-size:.7rem;letter-spacing:.06em;color:var(--mute);vertical-align:middle}
+.demo .tag{color:var(--acc);border-color:var(--acc)}
+.src{display:inline-flex;align-items:center;gap:.2rem;color:var(--mute);font-size:.8rem}
+summary{display:flex;gap:.9rem;align-items:center;padding:.9rem 1.1rem;cursor:pointer;list-style:none}
+summary::-webkit-details-marker{display:none}
+summary span{flex:1}
+details[open] summary .s{transform:rotate(90deg)}
+.list>div{padding:.75rem 1.1rem}
+.x{color:var(--acc)}
+button,.btn{font:inherit;color:var(--fg);background:var(--card);border:1px solid var(--line);border-radius:99px;padding:.7rem 1.2rem;cursor:pointer;display:inline-flex;gap:.5rem;align-items:center}
+button:hover,summary:hover{background:var(--hover)}
+:focus-visible{outline:1px solid var(--ic);outline-offset:2px}
+.c{text-align:center;margin:1.6rem 0}
+.note{color:var(--mute);font-size:.78rem;text-align:center;margin:1.5rem .5rem 0}
+dialog{width:min(30rem,100%);max-height:100%;border:1px solid var(--line);border-radius:1rem;padding:0;background:var(--card);color:var(--fg)}
+dialog::backdrop{background:#0006}
+form{padding:1.2rem 1.1rem}
+label,fieldset{display:block;margin:0 0 .85rem;font-size:.85rem}
+fieldset{border:0;padding:0}
+legend{padding:0;margin-bottom:.3rem}
+fieldset label{display:inline-flex;gap:.35rem;margin-right:1rem;font-size:.9rem}
+input:not([type=radio]),select,textarea{display:block;width:100%;margin-top:.3rem;font:inherit;color:var(--fg);background:var(--bg);border:1px solid var(--line);border-radius:.6rem;padding:.55rem .7rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:0 .7rem}
+.opt{color:var(--mute)}
+.hp{display:none}
+#err:not(:empty){border:1px solid var(--acc);color:var(--acc);border-radius:.6rem;padding:.6rem .8rem;margin-bottom:.9rem;font-size:.85rem}
+.fh{display:flex;justify-content:space-between;align-items:center;margin-bottom:.9rem}
+.fh button{padding:.35rem .6rem}
+</style>
+</head>
+<body>
+<svg hidden>
+<symbol id="ar" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+<symbol id="bk" viewBox="0 0 24 24"><path d="M17 17 7 7M15 7H7v8"/></symbol>
+<symbol id="pin" viewBox="0 0 24 24"><path d="M12 21s-6.5-5.6-6.5-11a6.5 6.5 0 0 1 13 0c0 5.4-6.5 11-6.5 11z"/><circle cx="12" cy="10" r="2.3"/></symbol>
+<symbol id="bot" viewBox="0 0 24 24"><path d="M10 3h4M10.5 3v4l-2 3v9.5c0 .8.7 1.5 1.5 1.5h4c.8 0 1.5-.7 1.5-1.5V10l-2-3V3M8.5 13h7"/></symbol>
+<symbol id="lit" viewBox="0 0 24 24"><path d="M12 3.5s6 6.5 6 10.5a6 6 0 0 1-12 0c0-4 6-10.5 6-10.5z"/></symbol>
+<symbol id="lst" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11M4.5 6h.01M4.5 12h.01M4.5 18h.01"/></symbol>
+<symbol id="flk" viewBox="0 0 24 24"><path d="M9 3h6M10 3v6l-5 9a2 2 0 0 0 1.7 3h10.6a2 2 0 0 0 1.7-3l-5-9V3M7.5 15h9"/></symbol>
+<symbol id="pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16zM13 7l4 4"/></symbol>
+<symbol id="chv" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+</svg>
+<main>
+<a class="back" href="https://nastya-star.github.io/"><svg class="s"><use href="#bk"/></svg>Anastasiia</a>
+<header><p>Beer Price Optimization</p><h1>Cheapest Radler</h1><small>Garching &amp; Munich · REWE · Lidl · Kaufland · ALDI Süd · Penny</small></header>
+<div id="sent" class="card" hidden><div class="row"><svg><use href="#pen"/></svg><span><b>Thank you — report received</b><small>It will be reviewed manually. Public prices don't change automatically.</small></span></div></div>
+<div id="cities"><p class="note">Loading prices…</p></div>
+<section class="card demo" aria-label="Demo data"><div class="row head"><svg><use href="#flk"/></svg><span><b>Simulated prices <span class="tag">DEMO</span></b></span></div><div class="row"><span id="demo"></span></div></section>
+<details class="card"><summary><svg><use href="#lst"/></svg><span><b>All recorded Radler products <span id="cnt"></span></b><small>Including records excluded from the ranking</small></span><svg class="s"><use href="#chv"/></svg></summary><div class="list" id="all"></div></details>
+<div class="c"><button type="button" id="open"><svg><use href="#pen"/></svg>Report a different price</button></div>
+<p class="note" id="srcs"></p>
+<p class="note">Prices are recorded observations, not guaranteed current prices. Offers apply while stocks last; check in store. Rankings use only verified, publicly available prices; alcohol-free and non-Radler drinks are excluded.</p>
+</main>
+
+<dialog id="dlg" aria-labelledby="ft">
+<form id="f" action="https://formsubmit.co/stepanenkon010@gmail.com" method="POST" enctype="multipart/form-data" novalidate>
+<div class="fh"><h2 id="ft">Report a price</h2><button type="button" id="close" aria-label="Close">✕</button></div>
+<p class="m" style="margin:0 0 1rem">Saw a different Radler price? Fill in what's on the shelf tag and attach a photo of it. Reports are checked by hand before anything changes on this page.</p>
+<div id="err" role="alert"></div>
+<input type="hidden" name="_subject" value="New Radler Price Information">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://nastya-star.github.io/beer-optimization/?sent=1">
+<input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<label>Supermarket<select name="Supermarket" required><option value="">Choose…</option><option>REWE</option><option>Lidl</option><option>Kaufland</option><option>ALDI Süd</option><option>Penny</option></select></label>
+<label>Store address / location<input name="Store" required maxlength="200" placeholder="Street and city, or store name"></label>
+<label>Radler brand / product<input name="Product" required maxlength="120" placeholder="e.g. Paulaner Natur-Radler"></label>
+<div class="two"><label>Price (€)<input name="Price_EUR" type="number" inputmode="decimal" step="0.01" min="0.01" max="500" required></label>
+<label>Date observed<input name="Date_observed" type="date" required></label></div>
+<fieldset><legend>The price is for</legend><label><input type="radio" name="Price_refers_to" value="Individual container" required>one bottle/can</label><label><input type="radio" name="Price_refers_to" value="Whole package">the whole package</label></fieldset>
+<div class="two"><label>Volume per container (L)<input name="Volume_L" type="number" inputmode="decimal" step="0.01" min="0.1" max="5" required placeholder="0.5"></label>
+<label>Number of containers<input name="Containers" type="number" inputmode="numeric" step="1" min="1" max="48" required placeholder="1"></label></div>
+<label>Photo of the shelf price tag (JPEG/PNG, max 10 MB)<input name="attachment" type="file" accept="image/jpeg,image/png" required></label>
+<div class="two"><label>Deposit (€) <span class="opt">optional</span><input name="Deposit_EUR" type="number" inputmode="decimal" step="0.01" min="0" max="20"></label>
+<label>Price type <span class="opt">optional</span><select name="Price_type"><option value="">—</option><option>Regular price</option><option>Promotion</option><option>Loyalty-app discount</option></select></label></div>
+<label>Notes <span class="opt">optional</span><textarea name="Notes" rows="2" maxlength="1000" placeholder="e.g. conditions, minimum quantity, validity dates"></textarea></label>
+<p class="m">Privacy: this form is processed by the third-party service <a href="https://formsubmit.co/" rel="noopener" target="_blank">FormSubmit</a> (formsubmit.co), which emails your entries and photo to the site owner. No account needed; please don't include personal data. You may be asked to complete a captcha.</p>
+<div class="c" style="margin:1rem 0 0"><button type="submit">Send report</button></div>
+</form>
+</dialog>
+
+<script>
+var $=function(i){return document.getElementById(i)},
+TODAY=new Date().toLocaleDateString("sv"),
+eur=function(v){return "€"+v.toFixed(2)},
+esc=function(s){return String(s==null?"":s).replace(/[&<>"]/g,function(c){return"&#"+c.charCodeAt(0)+";"})},
+ic=function(n,c){return'<svg'+(c?' class="'+c+'"':'')+'><use href="#'+n+'"/></svg>'},
+days=function(d){return Math.round((Date.parse(TODAY)-Date.parse(d))/864e5)};
+
+/* Why a record is excluded from both rankings ("" = eligible) */
+function reason(r){
+ if(!(r.price>0&&r.count>=1&&r.volume_l>0))return"incomplete data";
+ if(r.alcoholic!==true)return"alcohol-free";
+ if(r.radler!==true)return"not a Radler";
+ if(r.status==="personalized"||r.price_type==="loyalty"&&r.loyalty_public!==true)return"personalized / non-public discount";
+ if(r.status!=="verified")return"unverified";
+ if(r.valid_from&&r.valid_from>TODAY)return"offer not yet valid";
+ if(r.valid_to&&r.valid_to<TODAY)return"offer expired";
+ return"";
+}
+/* Checkout price for ONE container incl. refundable deposit; null if not individually buyable at this price */
+function single(r){
+ return !reason(r)&&r.single===true&&r.count===1&&(r.min_qty||1)<=1&&typeof r.deposit==="number"?r.price+r.deposit:null;
+}
+/* Beverage price per litre, excluding deposit */
+function perL(r){return reason(r)?null:r.price/(r.count*r.volume_l)}
+function best(recs,city,f){
+ return recs.filter(function(r){return r.city===city&&f(r)!==null})
+  .sort(function(a,b){return f(a)-f(b)||(b.observed>a.observed?1:-1)})[0]||null;
+}
+function pack(r){return(r.count>1?r.count+" × ":"")+r.volume_l+" L"}
+function facts(r){
+ var t=r.price_type==="regular"?"Regular price":r.price_type==="loyalty"?"Loyalty-app price":"Promotion",a=days(r.observed);
+ return[pack(r)+" · "+eur(r.price)+(r.count>1?" per package":"")+" · deposit "+(typeof r.deposit==="number"?eur(r.deposit):"unknown"),
+  t+(r.valid_from||r.valid_to?" · valid "+(r.valid_from||"…")+" – "+(r.valid_to||"…"):"")+((r.min_qty||1)>1?" · min. "+r.min_qty:""),
+  "Observed "+r.observed+(a>14?" ("+a+" days ago — may have changed)":"")+" · "+(r.origin?"automatic":"manual")+" record",
+  r.conditions||""].filter(Boolean).map(function(s){return"<small>"+esc(s)+"</small>"}).join("")
+  +(r.source?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":"");
+}
+function result(icon,label,r,v,unit){
+ return'<div class="row">'+ic(icon)+"<span><small>"+label+"</small>"+(r
+  ?'<div class="big">'+eur(v)+unit+"</div><b>"+esc(r.brand+" "+r.product)+"</b><small>"+esc(r.chain+" · "+r.branch+" · "+r.address)+"</small>"+facts(r)
+  :"<b>No verified price available</b>")+"</span></div>";
+}
+function render(d){
+ var R=d.records||[];
+ $("cities").innerHTML=["Garching","Munich"].map(function(c){
+  var s=best(R,c,single),l=best(R,c,perL);
+  return'<section class="card"><div class="row head">'+ic("pin")+"<span><h2>"+c+"</h2></span></div>"
+   +result("bot","Cheapest single bottle/can · incl. deposit",s,s&&single(s),"")
+   +result("lit","Cheapest per litre · excl. deposit",l,l&&perL(l)," / L")+"</section>";
+ }).join("");
+ var D=(d.demo||[]).slice().sort(function(a,b){return a.price-b.price});
+ $("demo").innerHTML=D.length?"<small>Hypothetical prices for 0.5 L single containers, excluding deposit. Not verified, not checked today and not confirmed in any branch — never real offers.</small>"
+  +D.map(function(r,i){return"<small>"+(i?"":"<b>Cheapest (demo): </b>")+esc(r.chain)+" — "+eur(r.price)+" + deposit · "+eur(r.price/(r.count*r.volume_l))+" / L</small>"}).join(""):"";
+ $("cnt").textContent="("+R.length+")";
+ $("all").innerHTML=R.length?R.slice().sort(function(a,b){return(a.city+a.chain).localeCompare(b.city+b.chain)}).map(function(r){
+  var x=reason(r);return"<div><b>"+esc(r.brand+" "+r.product)+(x?' <span class="tag x">excluded: '+esc(x)+"</span>":"")+"</b><small>"+esc(r.city+" · "+r.chain+" · "+r.branch)+"</small>"+facts(r)+"</div>";
+ }).join(""):"<div><small>No real price records yet.</small></div>";
+ var S=d.sources||{},on=[],off=[];
+ for(var k in S)(S[k].enabled?on:off).push(k.replace("_sued"," Süd").replace(/^./,function(c){return c.toUpperCase()}).replace("Rewe","REWE").replace("Aldi","ALDI")+(S[k].enabled?" (last checked "+(S[k].last_success||"never")+(S[k].last_error?"; last attempt failed":"")+")":""));
+ $("srcs").textContent="Automatic updates: "+(on.join(", ")||"none")+". Manual only: "+off.join(", ")+".";
+}
+fetch("data.json",{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(render)
+ .catch(function(){$("cities").innerHTML='<p class="note">Price data could not be loaded.</p>'});
+
+/* Report form */
+var dlg=$("dlg"),f=$("f");
+if(/[?&]sent=1/.test(location.search))$("sent").hidden=false;
+f.Date_observed.max=TODAY;
+$("open").onclick=function(){dlg.showModal?dlg.showModal():dlg.setAttribute("open","")};
+$("close").onclick=function(){dlg.close?dlg.close():dlg.removeAttribute("open")};
+f.onsubmit=function(e){
+ var E=[],ph=f.attachment.files[0];
+ [].forEach.call(f.elements,function(el){
+  el.setCustomValidity("");
+  if(el.name&&el.name[0]!=="_"&&!el.checkValidity()){var l=el.closest("fieldset")||el.closest("label");
+   var t=l.querySelector("legend")?l.querySelector("legend").textContent:l.firstChild.textContent;
+   if(E.join().indexOf(t)<0)E.push(t.trim()+": "+el.validationMessage)}
+ });
+ if(ph&&!/^image\/(jpeg|png)$/.test(ph.type))E.push("Photo: please attach a JPEG or PNG image.");
+ if(ph&&ph.size>10485760)E.push("Photo: the file is "+(ph.size/1048576).toFixed(1)+" MB; the limit is 10 MB.");
+ if(f.Price_refers_to.value==="Individual container"&&f.Containers.value&&+f.Containers.value!==1)E.push("Number of containers must be 1 when the price is for one bottle/can.");
+ if(f.Date_observed.value>TODAY)E.push("Date observed cannot be in the future.");
+ $("err").innerHTML=E.length?"<b>Please check:</b>"+E.map(function(s){return"<div>"+esc(s)+"</div>"}).join(""):"";
+ if(E.length){e.preventDefault();$("err").scrollIntoView({block:"nearest"})}
+};
+</script>
+</body>
+</html>
