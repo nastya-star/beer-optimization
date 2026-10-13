@@ -23,7 +23,7 @@ Edit `data.json` on GitHub (pencil icon) and add an object to `"records"`:
  "conditions": "",
  "valid_from": null, "valid_to": null,
  "observed": "2026-10-13",
- "source": "photo report 2026-10-13",
+ "source": "Shelf label photo, 2026-10-13", "source_type": "shelf_photo",
  "status": "verified"
 }
 ```
@@ -40,6 +40,7 @@ Edit `data.json` on GitHub (pencil icon) and add an object to `"records"`:
 | `loyalty_public` | `true` for app discounts anyone can get; `false` for personalised coupons |
 | `min_qty` | minimum number of packages required for the price |
 | `valid_from`, `valid_to`, `observed` | `YYYY-MM-DD` (`null` if not applicable) |
+| `source_type` | `"shelf_photo"` (no public link; photos stay private, never commit them) or `"retailer_website"` (`source` must be the https offer URL, shown as a link) |
 | `status` | `"verified"` (ranked), `"unverified"` or `"personalized"` (listed, not ranked) |
 
 Rules applied by the page: only alcoholic Radler, `status: "verified"`, public discounts and offers

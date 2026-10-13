@@ -169,7 +169,8 @@ function facts(r){
   t+(r.valid_from||r.valid_to?" · valid "+(r.valid_from||"…")+" – "+(r.valid_to||"…"):"")+((r.min_qty||1)>1?" · min. "+r.min_qty:""),
   "Observed "+r.observed+(a>14?" ("+a+" days ago — may have changed)":"")+" · "+(r.origin&&r.origin!=="manual"?"automatic":"manual")+" record",
   r.conditions||""].filter(Boolean).map(function(s){return"<small>"+esc(s)+"</small>"}).join("")
-  +(/^https?:\/\//.test(r.source||"")?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":r.source?"<small>Source: "+esc(r.source)+"</small>":"");
+  +(r.source_type==="shelf_photo"?"<small>Verified from shelf-label photo</small>"
+   :(r.source_type==="retailer_website"||!r.source_type)&&/^https:\/\//.test(r.source||"")?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":"");
 }
 function result(R,c,f,icon,label,note,unit){
  var r=best(R,c,f),v=r&&f(r),o={};

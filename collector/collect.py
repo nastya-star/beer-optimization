@@ -121,6 +121,7 @@ def kaufland():
                     "valid_to": o.get("salesTo") or o.get("dateTo"),
                     "observed": TODAY,
                     "source": KL + "/angebote/uebersicht.html",
+                    "source_type": "retailer_website",
                     "status": "verified",
                     "origin": "kaufland-auto",
                 })
@@ -151,6 +152,9 @@ def validate(d):
         if not (isinstance(r.get("count"), int) and 1 <= r["count"] <= 48): errs.append(w + "count out of range")
         if not (isinstance(r.get("volume_l"), (int, float)) and 0.1 <= r["volume_l"] <= 5): errs.append(w + "volume_l out of range")
         if r.get("deposit") is not None and not (isinstance(r["deposit"], (int, float)) and 0 <= r["deposit"] < 20): errs.append(w + "bad deposit")
+        st = r.get("source_type")
+        if st not in (None, "shelf_photo", "retailer_website"): errs.append(w + "bad source_type")
+        if st == "retailer_website" and not str(r.get("source", "")).startswith("https://"): errs.append(w + "retailer_website needs an https source URL")
         for k in ("valid_from", "valid_to", "observed"):
             if r.get(k) is not None and not ISO.match(str(r[k])): errs.append(w + f"{k} must be YYYY-MM-DD")
     ids = [r.get("id") for r in d.get("records", [])]

@@ -49,6 +49,7 @@
    "valid_to": null,
    "observed": "2026-10-13",
    "source": "Shelf label photo, 2026-10-13",
+   "source_type": "shelf_photo",
    "status": "verified",
    "origin": "manual"
   },
@@ -75,6 +76,7 @@
    "valid_to": null,
    "observed": "2026-10-13",
    "source": "Shelf label photo, 2026-10-13",
+   "source_type": "shelf_photo",
    "status": "verified",
    "origin": "manual"
   },
@@ -101,6 +103,7 @@
    "valid_to": null,
    "observed": "2026-10-13",
    "source": "Shelf label photo, 2026-10-13",
+   "source_type": "shelf_photo",
    "status": "verified",
    "origin": "manual"
   },
@@ -127,6 +130,7 @@
    "valid_to": null,
    "observed": "2026-10-13",
    "source": "Shelf label photo, 2026-10-13",
+   "source_type": "shelf_photo",
    "status": "verified",
    "origin": "manual"
   },
@@ -153,6 +157,7 @@
    "valid_to": null,
    "observed": "2026-10-13",
    "source": "Shelf label photo, 2026-10-13",
+   "source_type": "shelf_photo",
    "status": "verified",
    "origin": "manual"
   },
@@ -179,6 +184,7 @@
    "valid_to": "2026-10-17",
    "observed": "2026-10-13",
    "source": "https://filiale.kaufland.de/angebote/uebersicht.html",
+   "source_type": "retailer_website",
    "status": "verified",
    "origin": "kaufland-auto"
   },
@@ -205,6 +211,7 @@
    "valid_to": "2026-10-17",
    "observed": "2026-10-13",
    "source": "https://filiale.kaufland.de/angebote/uebersicht.html",
+   "source_type": "retailer_website",
    "status": "verified",
    "origin": "kaufland-auto"
   },
@@ -231,6 +238,7 @@
    "valid_to": "2026-10-17",
    "observed": "2026-10-13",
    "source": "https://filiale.kaufland.de/angebote/uebersicht.html",
+   "source_type": "retailer_website",
    "status": "verified",
    "origin": "kaufland-auto"
   },
@@ -257,6 +265,7 @@
    "valid_to": "2026-10-17",
    "observed": "2026-10-13",
    "source": "https://filiale.kaufland.de/angebote/uebersicht.html",
+   "source_type": "retailer_website",
    "status": "verified",
    "origin": "kaufland-auto"
   },
@@ -283,6 +292,7 @@
    "valid_to": "2026-10-17",
    "observed": "2026-10-13",
    "source": "https://filiale.kaufland.de/angebote/uebersicht.html",
+   "source_type": "retailer_website",
    "status": "verified",
    "origin": "kaufland-auto"
   }
