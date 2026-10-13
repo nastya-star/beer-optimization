@@ -167,9 +167,16 @@ function single(r){
 }
 /* Beverage price per litre, excluding deposit */
 function perL(r){return reason(r)?null:r.price/(r.count*r.volume_l)}
+/* Linear minimum search: one pass, O(n) time, O(1) extra space.
+   Ties on the objective value go to the most recent observation. */
 function best(recs,city,f){
- return recs.filter(function(r){return r.city===city&&f(r)!==null})
-  .sort(function(a,b){return f(a)-f(b)||(b.observed>a.observed?1:-1)})[0]||null;
+ var b=null,bv=0;
+ for(var i=0;i<recs.length;i++){
+  var r=recs[i];if(r.city!==city)continue;
+  var v=f(r);if(v===null)continue;
+  if(b===null||v<bv||v===bv&&r.observed>b.observed){b=r;bv=v}
+ }
+ return b;
 }
 function pack(r){return(r.count>1?r.count+" × ":"")+r.volume_l+" L"}
 function facts(r){

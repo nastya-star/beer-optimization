@@ -126,27 +126,21 @@ li{margin:.25rem 0}
 
 <section class="card" aria-labelledby="s3">
 <h2 id="s3"><span>03</span>Algorithm</h2>
-<p>Because every set is finite (a few dozen offers at most), the website simply checks them all. This is what <a href="https://github.com/nastya-star/beer-optimization/blob/main/index.html">index.html</a> does every time the page loads:</p>
-<pre><code><span class="k">read</span> records from data.json
-
-<span class="k">for each</span> city c <span class="k">in</span> {Garching, Munich}:
-    I_c  ← { r : r.city = c <span class="k">and</span> eligible(r) }
-    I*_c ← { r ∈ I_c : r.single <span class="k">and</span> r.count = 1
-                      <span class="k">and</span> r.min_qty ≤ 1 <span class="k">and</span> r.deposit is known }
-
-    best1 ← offer in I*_c with smallest  α + β         <span class="c"># price + deposit</span>
-    best2 ← offer in I_c  with smallest  α / (γ · δ)   <span class="c"># price per liter</span>
-                                        <span class="c"># ties: most recent observation wins</span>
-    <span class="k">show</span> best1 and best2 with branch, address and map link
-         (or "No verified prices yet" if the set is empty)
-
-eligible(r):
-    r is an alcoholic Radler                   <span class="c"># no alcohol-free, no other beer mixes</span>
-    <span class="k">and</span> r.status = verified                    <span class="c"># no unverified, personalized or online-only reference prices</span>
-    <span class="k">and</span> (r is not a loyalty price <span class="k">or</span> the discount is public)
-    <span class="k">and</span> valid_from ≤ today ≤ valid_to          <span class="c"># expired or future offers are skipped</span></code></pre>
-<p>In code, this is plain JavaScript: <code>filter</code> builds the sets, <code>sort</code> orders them by the objective, and the first element is the minimum. There is <b>no</b> linear or mixed-integer programming solver involved, and none is needed: a finite minimum can be found by comparison.</p>
-<p><b>Complexity.</b> With <math><mi>n</mi></math> records in total, each of the four searches (2 cities × 2 problems) filters all records in <math><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></math> and sorts the remaining ones in <math><mi>O</mi><mo>(</mo><mi>n</mi><mspace width=".15em"/><mi>log</mi><mspace width=".15em"/><mi>n</mi><mo>)</mo></math>, so a page load costs <math><mi>O</mi><mo>(</mo><mi>n</mi><mspace width=".15em"/><mi>log</mi><mspace width=".15em"/><mi>n</mi><mo>)</mo></math> time and <math><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></math> memory. A single linear scan would get it down to <math><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></math>, but with a dozen records the difference is a few microseconds; sorting keeps the tie-breaking rule simple.</p>
+<h3 style="margin-top:0">How do we find the cheapest Radler?</h3>
+<p>Imagine you have a list of Radler prices from different supermarkets.</p>
+<p>You start with the first price and remember it as the cheapest. Then you look at the next price. Is it cheaper? If yes, remember the new price instead.</p>
+<p>Keep doing this until you've checked every offer. The cheapest one you've found is the winner!</p>
+<p>This method is called <b>Linear Minimum Search</b>.</p>
+<p>For our website, we do this separately for Munich and Garching, and twice for each city:</p>
+<ul>
+<li>First, to find the cheapest single bottle or can, <b>including</b> Pfand.</li>
+<li>Second, to find the lowest price per liter, <b>excluding</b> Pfand.</li>
+</ul>
+<p>Before comparing prices, we exclude offers that don't qualify, such as alcohol-free Radler, expired promotions and unverified prices.</p>
+<p>If two offers cost exactly the same, we prefer the one observed most recently.</p>
+<h3>How fast is it?</h3>
+<p>If we have 10 prices, we check 10 prices. If we have 100, we check 100.</p>
+<p>That's <math><mi>O</mi><mo>(</mo><mi>n</mi><mo>)</mo></math> time. We don't need to sort the prices or use a complicated optimization solver.</p>
 </section>
 
 <section class="card" aria-labelledby="s4">
