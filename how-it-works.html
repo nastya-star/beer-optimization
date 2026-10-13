@@ -72,28 +72,15 @@ hr{border:0;border-top:1px solid var(--line);margin:2rem 0 1.6rem}
 
 <section class="card" aria-labelledby="s2">
 <h2 id="s2"><span>02</span>The mathematical problem</h2>
-<p>The word <em>cheapest</em> deserves some attention. What if we want to spend as little as possible on just one can of beer, or we need to buy a lot, so it would be better to measure the price per liter? These are different questions, but both belong to discrete minimization problems.</p>
+<p>The word <b>cheapest</b> deserves some attention. What if we want to spend as little as possible on a single can of Radler? Or perhaps we need to buy a larger quantity, in which case comparing prices per liter makes more sense. These are two different questions, and each leads to a discrete minimization problem.</p>
 
 <h3>Cities and sets</h3>
-<p>We consider two cities: <b>Garching and Munich</b>.</p>
-<p>The symbol <math><mi>c</mi></math> represents whichever city we are currently examining.</p>
-<p>We calculate the results separately because supermarket prices may differ between cities and individual branches. Lidl generally follows a uniform pricing policy, while each observation in our database remains associated with its recorded location.</p>
-<p>For a given city <math><mi>c</mi></math>, let</p>
-<div class="eq"><math display="block"><msub><mi>I</mi><mi>c</mi></msub><mo>=</mo><mo>{</mo><mtext>eligible Radler offers in city&#8194;</mtext><mi>c</mi><mo>}</mo></math></div>
-<p>For the first problem, we introduce a smaller set:</p>
-<div class="eq"><math display="block"><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup><mo>⊆</mo><msub><mi>I</mi><mi>c</mi></msub></math></div>
-<p>It contains offers where one bottle or can can be purchased individually, with a known deposit and a minimum purchase quantity of one.</p>
-<p>Consider three offers:</p>
-<div class="tw"><table>
-<thead><tr><th>Offer</th><th class="c"><math><msub><mi>I</mi><mi>c</mi></msub></math></th><th class="c"><math><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup></math></th></tr></thead>
-<tbody>
-<tr><td>One 0.5 L bottle at Lidl</td><td class="c">Yes</td><td class="c">Yes</td></tr>
-<tr><td>Six 0.5 L bottles at Lidl</td><td class="c">Yes</td><td class="c">—</td></tr>
-<tr><td>One 0.5 L can at REWE</td><td class="c">Yes</td><td class="c">Yes</td></tr>
-</tbody></table></div>
+<p>We consider two cities, <b>Garching and Munich</b>, and use <math><mi>c</mi></math> to represent the city currently being examined. We calculate the results separately because supermarket prices may differ between cities and individual branches. Lidl generally follows a uniform pricing policy, while each observation in our database remains associated with its recorded location.</p>
+<p>For a given city <math><mi>c</mi></math>, let <math><msub><mi>I</mi><mi>c</mi></msub></math> denote the set of all eligible Radler offers. We also define a subset <math><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup><mo>⊆</mo><msub><mi>I</mi><mi>c</mi></msub></math>, containing only offers where a single bottle or can can be purchased individually, with a known deposit and a minimum purchase quantity of one.</p>
+<p>For example, a single 0.5 L bottle from Lidl or a single 0.5 L can from REWE belongs to both <math><msub><mi>I</mi><mi>c</mi></msub></math> and <math><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup></math>, while a six-pack from Lidl belongs only to <math><msub><mi>I</mi><mi>c</mi></msub></math>.</p>
 
 <h3>Parameters</h3>
-<p>Each offer is identified by an index <math><mi>i</mi></math>.</p>
+<p>Each offer is identified by an index <math><mi>i</mi></math> and described by the following parameters:</p>
 <div class="tw"><table>
 <thead><tr><th>Symbol</th><th>Meaning</th></tr></thead>
 <tbody>
@@ -103,28 +90,19 @@ hr{border:0;border-top:1px solid var(--line);margin:2rem 0 1.6rem}
 <tr><td><math><msub><mi>δ</mi><mi>i</mi></msub></math></td><td>Volume per container (liters)</td></tr>
 <tr><td><math><msub><mi>ε</mi><mi>i</mi></msub></math></td><td>Individual purchase availability: 1 if available, 0 otherwise</td></tr>
 </tbody></table></div>
-<p>The smaller set can now be written as</p>
-<div class="eq"><math display="block"><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup><mo>=</mo><mo>{</mo><mi>i</mi><mo>∈</mo><msub><mi>I</mi><mi>c</mi></msub><mo>:</mo><msub><mi>ε</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn><mo>,</mo><mspace width=".4em"/><msub><mi>γ</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn><mo>}</mo></math></div>
-<p>with the additional requirements of a known deposit and a minimum purchase quantity of one.</p>
+<p>Using these parameters, the subset <math><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup></math> contains offers satisfying <math><msub><mi>ε</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn></math> and <math><msub><mi>γ</mi><mi>i</mi></msub><mo>=</mo><mn>1</mn></math>, with a known deposit and a minimum purchase quantity of one. In other words, every offer in this subset represents a Radler that we can buy individually at its recorded price.</p>
 
 <h3>Problem 1 — Minimum price per bottle</h3>
-<p>Our first objective is the smallest amount payable for one bottle or can, including Pfand.</p>
+<p>Our first objective is to find the smallest amount payable for a single bottle or can, including the refundable deposit (Pfand). We consider only offers from <math><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup></math>:</p>
 <div class="eq big boxed"><math display="block"><munder><mi>min</mi><mrow><mi>i</mi><mo>∈</mo><msubsup><mi>I</mi><mi>c</mi><mo>∗</mo></msubsup></mrow></munder><mspace width=".2em"/><mo>(</mo><msub><mi>α</mi><mi>i</mi></msub><mo>+</mo><msub><mi>β</mi><mi>i</mi></msub><mo>)</mo></math></div>
 
 <h3>Problem 2 — Minimum price per liter</h3>
-<p>Our second objective is the lowest beverage price per liter. Here, individual bottles and multipacks compete together.</p>
+<p>Our second objective is to find the lowest beverage price per liter. Here, we consider all eligible offers in <math><msub><mi>I</mi><mi>c</mi></msub></math>, including individual bottles and multipacks. Since Pfand is refundable, we exclude it from this calculation:</p>
 <div class="eq big boxed"><math display="block"><munder><mi>min</mi><mrow><mi>i</mi><mo>∈</mo><msub><mi>I</mi><mi>c</mi></msub></mrow></munder><mspace width=".2em"/><mfrac><msub><mi>α</mi><mi>i</mi></msub><mrow><msub><mi>γ</mi><mi>i</mi></msub><mo>&#8290;</mo><msub><mi>δ</mi><mi>i</mi></msub></mrow></mfrac></math></div>
-<p>The refundable deposit is excluded from this comparison.</p>
 
 <h3>An example</h3>
-<p>On 13 October 2026, I found Perlenbacher Radler at Lidl on Schleißheimer Straße.</p>
-<p>One 0.5 L bottle cost €0.45, plus €0.25 Pfand.</p>
-<div class="eq"><math display="block"><mn>0.45</mn><mo>+</mo><mn>0.25</mn><mo>=</mo><mn>0.70</mn><mtext>&#8202;€</mtext></math></div>
-<p>A six-pack cost €2.69 for three liters:</p>
-<div class="eq"><math display="block"><mfrac><mn>2.69</mn><mrow><mn>6</mn><mo>·</mo><mn>0.5</mn></mrow></mfrac><mo>≈</mo><mn>0.897</mn><mtext>&#8202;€/L</mtext></math></div>
-<p>The individual bottle costs €0.90/L.</p>
-<p>A difference of roughly a third of a cent per liter.</p>
-<p>An impressively small reward for such a respectable mathematical formulation.</p>
+<p>On 13 October 2026, I found Perlenbacher Radler at Lidl on Schleißheimer Straße. A single 0.5 L bottle cost €0.45 plus €0.25 Pfand, giving a total checkout price of €0.70. A six-pack containing three liters cost €2.69, corresponding to approximately €0.897 per liter, compared with €0.90 per liter for the individual bottle.</p>
+<p>For the first problem, the single bottle costs €0.70 including Pfand. For the second, the six-pack offers a slightly better price per liter. The difference is roughly a third of a cent per liter — an impressively small reward for such a respectable mathematical formulation.</p>
 </section>
 
 <section class="card" aria-labelledby="s3">
