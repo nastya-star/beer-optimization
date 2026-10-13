@@ -55,10 +55,6 @@ summary span{flex:1}
 details[open] summary .s{transform:rotate(90deg)}
 .list>div{padding:.8rem 1.15rem;border-top:1px solid var(--line)}
 .x{border-color:var(--line);color:var(--mute);letter-spacing:.04em;font-weight:400}
-.demo{margin-top:1.6rem;padding:1rem 1.15rem;font-size:.85rem}
-.demo b{font-size:.85rem}
-.demo ul{list-style:none;margin:.6rem 0 0;padding:0}
-.demo li{display:flex;justify-content:space-between;gap:1rem;padding:.3rem 0;border-top:1px solid var(--line);color:var(--ic);font-size:.82rem}
 .note{color:var(--mute);font-size:.75rem;text-align:center;margin:1.2rem .5rem 0}
 #sent{display:flex;gap:.9rem;padding:1rem 1.15rem}
 #sent[hidden]{display:none}
@@ -112,7 +108,6 @@ input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inh
 <div id="cities"><p class="note">Loading prices…</p></div>
 <section class="rep" aria-labelledby="rt"><svg><use href="#cam"/></svg><span><b id="rt">Seen a different price?</b><small>Photograph the shelf tag and send it in. Every report is checked by hand.</small></span><button type="button" class="pri" id="open">Report a different price<svg><use href="#ar"/></svg></button></section>
 <details class="card"><summary><svg><use href="#lst"/></svg><span><b>All recorded Radler products <span id="cnt" class="num"></span></b><small>Including records excluded from the ranking</small></span><svg class="s"><use href="#chv"/></svg></summary><div class="list" id="all"></div></details>
-<section class="card demo" aria-label="Demo data"><b>Simulated prices <span class="tag">DEMO</span></b><div id="demo"></div></section>
 <p class="note" id="srcs"></p>
 <p class="note">Prices are recorded observations, not guaranteed current prices. Offers apply while stocks last; check in store. Rankings use only verified, publicly available prices; alcohol-free and non-Radler drinks are excluded.</p>
 </main>
@@ -192,9 +187,6 @@ function render(d){
    +result(R,c,single,"bot","Cheapest single","incl. deposit","")
    +result(R,c,perL,"lit","Best per liter","excl. deposit","/ L")+"</div></section>";
  }).join("");
- var D=(d.demo||[]).slice().sort(function(a,b){return a.price-b.price});
- $("demo").innerHTML=D.length?"<small>Hypothetical example prices for 0.5 L single containers, excluding deposit. Not verified, not checked today, not confirmed in any branch: not real offers and never used as results.</small><ul>"
-  +D.map(function(r){return"<li><span>"+esc(r.chain)+'</span><span class="num">'+eur(r.price)+" + deposit · "+eur(r.price/(r.count*r.volume_l))+" / L</span></li>"}).join("")+"</ul>":"";
  $("cnt").textContent="("+R.length+")";
  $("all").innerHTML=R.length?R.slice().sort(function(a,b){return(a.city+a.chain).localeCompare(b.city+b.chain)}).map(function(r){
   var x=reason(r);return"<div><b>"+esc(r.brand+" "+r.product)+(x?' <span class="tag x">Excluded: '+esc(x)+"</span>":"")+"</b><small>"+esc(r.city+" · "+r.chain+" · "+r.branch)+"</small>"+facts(r)+"</div>";

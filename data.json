@@ -1,36 +1,4 @@
 {
- "demo": [
-  {
-   "chain": "ALDI Süd",
-   "price": 0.49,
-   "count": 1,
-   "volume_l": 0.5
-  },
-  {
-   "chain": "Lidl",
-   "price": 0.55,
-   "count": 1,
-   "volume_l": 0.5
-  },
-  {
-   "chain": "Kaufland",
-   "price": 0.59,
-   "count": 1,
-   "volume_l": 0.5
-  },
-  {
-   "chain": "Penny",
-   "price": 0.65,
-   "count": 1,
-   "volume_l": 0.5
-  },
-  {
-   "chain": "REWE",
-   "price": 0.79,
-   "count": 1,
-   "volume_l": 0.5
-  }
- ],
  "sources": {
   "kaufland": {
    "enabled": true,

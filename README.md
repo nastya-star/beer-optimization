@@ -45,7 +45,7 @@ Edit `data.json` on GitHub (pencil icon) and add an object to `"records"`:
 Rules applied by the page: only alcoholic Radler, `status: "verified"`, public discounts and offers
 inside their validity dates are ranked. "Single bottle/can" needs `single: true`, `count: 1`, `min_qty: 1`
 and a known deposit (price + deposit). "Per litre" = `price / (count × volume_l)`, without deposit.
-Records older than 14 days are flagged as possibly outdated. The `demo` list is simulated data and never ranked.
+Records older than 14 days are flagged as possibly outdated.
 
 After a commit, the workflow validates the file; a red ❌ under *Actions* means a typo (the log names the record).
 Local check: `python collector/collect.py --check`.
