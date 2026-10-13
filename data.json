@@ -295,6 +295,34 @@
    "source_type": "retailer_website",
    "status": "verified",
    "origin": "kaufland-auto"
+  },
+  {
+   "id": "aldi-online-schultenbraeu-radler-can05-200272",
+   "brand": "Schultenbräu",
+   "product": "Radler",
+   "alcoholic": true,
+   "radler": true,
+   "abv": 2.0,
+   "chain": "ALDI Süd",
+   "branch": null,
+   "address": null,
+   "city": null,
+   "price": 0.49,
+   "count": 1,
+   "volume_l": 0.5,
+   "deposit": 0.25,
+   "single": true,
+   "price_type": "regular",
+   "loyalty_public": null,
+   "min_qty": 1,
+   "conditions": "Official ALDI Süd online product price (0.5 L can, 2 % alcohol, Einweg Pfand €0.25). Not verified in a specific branch.",
+   "valid_from": null,
+   "valid_to": null,
+   "observed": "2026-10-13",
+   "source": "https://www.aldi-sued.de/produkt/schultenbraeu-radler-0-5-l-000000000000200272",
+   "source_type": "official_online",
+   "status": "reference",
+   "origin": "manual"
   }
  ]
 }

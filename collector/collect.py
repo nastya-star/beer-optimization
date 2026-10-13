@@ -141,20 +141,23 @@ def validate(d):
     errs = []
     for i, r in enumerate(d.get("records", [])):
         w = f'records[{i}] {r.get("id", "?")}: '
+        ref = r.get("status") == "reference"  # official price without a confirmed branch: never ranked
         for k, t in REQ.items():
+            if ref and k in ("branch", "address", "city") and r.get(k) is None:
+                continue
             if not isinstance(r.get(k), t) or isinstance(r.get(k), bool) != (t is bool):
                 errs.append(w + f"{k} missing or wrong type")
         if r.get("chain") not in CHAINS: errs.append(w + "unknown chain")
-        if r.get("city") not in ("Garching", "Munich"): errs.append(w + "city must be Garching or Munich")
+        if r.get("city") not in ("Garching", "Munich") and not (ref and r.get("city") is None): errs.append(w + "city must be Garching or Munich")
         if r.get("price_type") not in ("regular", "offer", "loyalty"): errs.append(w + "bad price_type")
-        if r.get("status") not in ("verified", "unverified", "personalized"): errs.append(w + "bad status")
+        if r.get("status") not in ("verified", "unverified", "personalized", "reference"): errs.append(w + "bad status")
         if not (isinstance(r.get("price"), (int, float)) and 0 < r["price"] < 500): errs.append(w + "price out of range")
         if not (isinstance(r.get("count"), int) and 1 <= r["count"] <= 48): errs.append(w + "count out of range")
         if not (isinstance(r.get("volume_l"), (int, float)) and 0.1 <= r["volume_l"] <= 5): errs.append(w + "volume_l out of range")
         if r.get("deposit") is not None and not (isinstance(r["deposit"], (int, float)) and 0 <= r["deposit"] < 20): errs.append(w + "bad deposit")
         st = r.get("source_type")
-        if st not in (None, "shelf_photo", "retailer_website"): errs.append(w + "bad source_type")
-        if st == "retailer_website" and not str(r.get("source", "")).startswith("https://"): errs.append(w + "retailer_website needs an https source URL")
+        if st not in (None, "shelf_photo", "retailer_website", "official_online"): errs.append(w + "bad source_type")
+        if st in ("retailer_website", "official_online") and not str(r.get("source", "")).startswith("https://"): errs.append(w + f"{st} needs an https source URL")
         for k in ("valid_from", "valid_to", "observed"):
             if r.get(k) is not None and not ISO.match(str(r[k])): errs.append(w + f"{k} must be YYYY-MM-DD")
     ids = [r.get("id") for r in d.get("records", [])]

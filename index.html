@@ -147,6 +147,7 @@ function reason(r){
  if(r.alcoholic!==true)return"alcohol-free";
  if(r.radler!==true)return"not a Radler";
  if(r.status==="personalized"||r.price_type==="loyalty"&&r.loyalty_public!==true)return"personalized / non-public discount";
+ if(r.status==="reference")return"official online price, branch not confirmed";
  if(r.status!=="verified")return"unverified";
  if(r.valid_from&&r.valid_from>TODAY)return"offer not yet valid";
  if(r.valid_to&&r.valid_to<TODAY)return"offer expired";
@@ -170,7 +171,7 @@ function facts(r){
   "Observed "+r.observed+(a>14?" ("+a+" days ago — may have changed)":"")+" · "+(r.origin&&r.origin!=="manual"?"automatic":"manual")+" record",
   r.conditions||""].filter(Boolean).map(function(s){return"<small>"+esc(s)+"</small>"}).join("")
   +(r.source_type==="shelf_photo"?"<small>Verified from shelf-label photo</small>"
-   :(r.source_type==="retailer_website"||!r.source_type)&&/^https:\/\//.test(r.source||"")?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":"");
+   :(r.source_type==="retailer_website"||r.source_type==="official_online"||!r.source_type)&&/^https:\/\//.test(r.source||"")?'<a class="src" href="'+esc(r.source)+'" rel="noopener" target="_blank">Source'+ic("ar","s")+"</a>":"");
 }
 function result(R,c,f,icon,label,note,unit){
  var r=best(R,c,f),v=r&&f(r),o={};
@@ -189,8 +190,8 @@ function render(d){
    +result(R,c,perL,"lit","Best per liter","excl. deposit","/ L")+"</div></section>";
  }).join("");
  $("cnt").textContent="("+R.length+")";
- $("all").innerHTML=R.length?R.slice().sort(function(a,b){return(a.city+a.chain).localeCompare(b.city+b.chain)}).map(function(r){
-  var x=reason(r);return"<div><b>"+esc(r.brand+" "+r.product)+(x?' <span class="tag x">Excluded: '+esc(x)+"</span>":"")+"</b><small>"+esc(r.city+" · "+r.chain+" · "+r.branch)+"</small>"+facts(r)+"</div>";
+ $("all").innerHTML=R.length?R.slice().sort(function(a,b){return((a.city||"~")+a.chain).localeCompare((b.city||"~")+b.chain)}).map(function(r){
+  var x=reason(r);return"<div><b>"+esc(r.brand+" "+r.product)+(x?' <span class="tag x">Excluded: '+esc(x)+"</span>":"")+"</b><small>"+esc([r.city||"Official online price · no branch",r.chain,r.branch].filter(Boolean).join(" · "))+"</small>"+facts(r)+"</div>";
  }).join(""):"<div><small>No real price records yet.</small></div>";
  var S=d.sources||{},on=[],off=[];
  for(var k in S)(S[k].enabled?on:off).push(k.replace("_sued"," Süd").replace(/^./,function(c){return c.toUpperCase()}).replace("Rewe","REWE").replace("Aldi","ALDI")+(S[k].enabled?" (last checked "+(S[k].last_success||"never")+(S[k].last_error?"; last attempt failed":"")+")":""));

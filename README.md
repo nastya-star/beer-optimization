@@ -40,8 +40,8 @@ Edit `data.json` on GitHub (pencil icon) and add an object to `"records"`:
 | `loyalty_public` | `true` for app discounts anyone can get; `false` for personalised coupons |
 | `min_qty` | minimum number of packages required for the price |
 | `valid_from`, `valid_to`, `observed` | `YYYY-MM-DD` (`null` if not applicable) |
-| `source_type` | `"shelf_photo"` (no public link; photos stay private, never commit them) or `"retailer_website"` (`source` must be the https offer URL, shown as a link) |
-| `status` | `"verified"` (ranked), `"unverified"` or `"personalized"` (listed, not ranked) |
+| `source_type` | `"shelf_photo"` (no public link; photos stay private, never commit them) , `"retailer_website"` or `"official_online"` (`source` must be the https URL, shown as a link) |
+| `status` | `"verified"` (ranked), `"unverified"`, `"personalized"` or `"reference"` (listed, not ranked; `"reference"` = official price without a confirmed branch, `city`/`branch`/`address` may be `null`) |
 
 Rules applied by the page: only alcoholic Radler, `status: "verified"`, public discounts and offers
 inside their validity dates are ranked. "Single bottle/can" needs `single: true`, `count: 1`, `min_qty: 1`
