@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
-<title>Beer Price Optimization · Radler in Garching & Munich</title>
+<title>Maximum Radler. Minimum Regret.</title>
 <meta name="description" content="Cheapest alcoholic Radler in Garching and Munich: REWE, Lidl, Kaufland, ALDI Süd and Penny.">
 <link rel="icon" href="data:,">
 <style>
@@ -16,9 +16,8 @@ main{max-width:36rem;margin:0 auto;padding:1.5rem 1rem 3rem}
 a{color:inherit}
 .back{display:inline-flex;align-items:center;gap:.3rem;color:var(--mute);font-size:.82rem;text-decoration:none}
 header{text-align:center;margin:2.4rem 0}
-.lbl{margin:0;color:var(--mute);font-size:.72rem;letter-spacing:.18em}
-h1,h2,.empty{font-family:"Bodoni MT","Bodoni 72",Didot,"Didot LT STD",Georgia,"Times New Roman","Noto Serif",serif;font-style:italic;font-weight:400}
-h1{margin:.45rem 0 .35rem;font-size:3rem;line-height:1.1;letter-spacing:-.01em}
+h1,h2,.empty{font-weight:500;letter-spacing:-.02em}
+h1{margin:0 0 .6rem;font-size:clamp(2rem,7.5vw,2.75rem);line-height:1.12;letter-spacing:-.03em;text-wrap:balance}
 .sub{margin:0;font-size:1rem;color:var(--ic)}
 .chains{margin-top:.6rem}
 h2{margin:0;font-size:1.5rem;line-height:1.2}
@@ -29,7 +28,7 @@ h2{margin:0;font-size:1.5rem;line-height:1.2}
 .tl{display:flex;gap:.4rem;align-items:center;font-size:.72rem;letter-spacing:.12em;color:var(--mute);text-transform:uppercase}
 .price{font-size:1.95rem;font-weight:500;line-height:1.1;margin:.55rem 0 .1rem;font-variant-numeric:tabular-nums lining-nums;letter-spacing:-.01em}
 .price span{font-size:.95rem;font-weight:400;color:var(--mute);margin-left:.2rem}
-.empty{font-size:1.25rem;margin:.7rem 0 .2rem;color:var(--ic)}
+.empty{font-size:1.2rem;font-weight:400;margin:.7rem 0 .2rem;color:var(--ic)}
 .tile b{margin-top:.6rem}
 .meta{margin-top:.55rem;padding-top:.55rem;border-top:1px solid var(--line)}
 svg{flex:none;width:20px;height:20px;fill:none;stroke:var(--ic);stroke-width:1.4;stroke-linecap:round;stroke-linejoin:round}
@@ -107,7 +106,7 @@ input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inh
 </svg>
 <main>
 <a class="back" href="https://nastya-star.github.io/"><svg class="s"><use href="#bk"/></svg>Anastasiia</a>
-<header><p class="lbl">BEER PRICE OPTIMIZATION</p><h1>Radler Finder</h1><p class="sub">The best beer deals, mathematically.</p><small class="chains">Garching &amp; Munich · REWE · Lidl · Kaufland · ALDI Süd · Penny</small></header>
+<header><h1>Maximum Radler. Minimum Regret.</h1><p class="sub">A discrete price minimization problem.</p><small class="chains">Garching &amp; Munich · REWE · Lidl · Kaufland · ALDI Süd · Penny</small></header>
 <div id="sent" class="card" role="status" hidden><svg><use href="#cam"/></svg><span><b>Report submitted</b><small>Thank you. Your report was passed to the form service; if it arrives, it will be reviewed by hand. Prices on this page don't change automatically.</small></span></div>
 <div id="cities"><p class="note">Loading prices…</p></div>
 <section class="rep" aria-labelledby="rt"><svg><use href="#cam"/></svg><span><b id="rt">Seen a different price?</b><small>Photograph the shelf tag and send it in. Every report is checked by hand.</small></span><button type="button" class="pri" id="open">Report a different price<svg><use href="#ar"/></svg></button></section>
