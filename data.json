@@ -3,8 +3,8 @@
   "kaufland": {
    "enabled": true,
    "note": "Store-level offers from filiale.kaufland.de (Munich stores; no Kaufland in Garching). Offers only, no regular shelf prices.",
-   "last_attempt": "2026-10-18",
-   "last_success": "2026-10-18",
+   "last_attempt": "2026-10-19",
+   "last_success": "2026-10-19",
    "last_count": 0,
    "last_error": null
   },
