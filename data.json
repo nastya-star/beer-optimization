@@ -23,6 +23,10 @@
   "penny": {
    "enabled": false,
    "note": "Regional offers require a JavaScript market selection."
+  },
+  "edeka": {
+   "enabled": false,
+   "note": "Manual only: prices come from shelf-label photos; no automatic source implemented."
   }
  },
  "records": [
@@ -728,6 +732,33 @@
    "source_type": "retailer_website",
    "status": "verified",
    "origin": "kaufland-auto"
+  },
+  {
+   "id": "man-edeka-goerresstr29-goesser-naturradler-bottle05-2026-10-31",
+   "brand": "Gösser",
+   "product": "NaturRadler",
+   "alcoholic": true,
+   "radler": true,
+   "chain": "EDEKA",
+   "branch": "EDEKA Görresstraße",
+   "address": "Görresstraße 29, 80798 München-Maxvorstadt",
+   "city": "Munich",
+   "price": 1.49,
+   "count": 1,
+   "volume_l": 0.5,
+   "deposit": 0.08,
+   "single": true,
+   "price_type": "regular",
+   "loyalty_public": null,
+   "min_qty": 1,
+   "conditions": "Regular shelf price (1 × 0.5 L bottle), deposit shown separately on label. No promotion or loyalty conditions.",
+   "valid_from": null,
+   "valid_to": null,
+   "observed": "2026-10-31",
+   "source": "Shelf label photo, 2026-10-31",
+   "source_type": "shelf_photo",
+   "status": "verified",
+   "origin": "manual"
   }
  ]
 }

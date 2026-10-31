@@ -1,6 +1,6 @@
 # Beer Price Optimization
 
-Cheapest alcoholic Radler in Garching and Munich (REWE, Lidl, Kaufland, ALDI Süd, Penny).
+Cheapest alcoholic Radler in Garching and Munich (REWE, Lidl, Kaufland, ALDI Süd, Penny, EDEKA).
 Live: https://nastya-star.github.io/beer-optimization/
 
 Files: `index.html` (page), `data.json` (prices), `collector/collect.py` (daily collector + validator),
@@ -31,7 +31,7 @@ Edit `data.json` on GitHub (pencil icon) and add an object to `"records"`:
 | Field | Meaning |
 |---|---|
 | `city` | `"Garching"` or `"Munich"` |
-| `chain` | `"REWE"`, `"Lidl"`, `"Kaufland"`, `"ALDI Süd"`, `"Penny"` |
+| `chain` | `"REWE"`, `"Lidl"`, `"Kaufland"`, `"ALDI Süd"`, `"Penny"`, `"EDEKA"` |
 | `price` | price of the whole package in €, without deposit |
 | `count`, `volume_l` | containers in the package, litres per container |
 | `deposit` | refundable deposit for the whole package in € (`null` if unknown) |
@@ -60,6 +60,7 @@ Local check: `python collector/collect.py --check`.
 | ALDI Süd | disabled | Akamai blocks automated requests (403), even robots.txt. |
 | Lidl | disabled | No store-level Radler prices online; weekly offer URLs change. |
 | Penny | disabled | Regional offers need a JavaScript market selection; static pages show another region. |
+| EDEKA | manual only | Added 2026-10-31. No automatic source has been checked or implemented; prices come from shelf-label photos. |
 
 Blocked sites are never bypassed. If a collector fails, its previous records stay unchanged with their
 original observation date, and offers drop out of the ranking once their validity ends.

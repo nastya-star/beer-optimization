@@ -14,7 +14,7 @@
 const OWNER_EMAIL = 'stepanenkon010@gmail.com';
 const SUBJECT = 'New Radler Price Information';
 const FOLDER_NAME = 'Radler price reports';
-const CHAINS = ['REWE', 'Lidl', 'Kaufland', 'ALDI Süd', 'Penny'];
+const CHAINS = ['REWE', 'Lidl', 'Kaufland', 'ALDI Süd', 'Penny', 'EDEKA'];
 const MAX_FILES = 10;
 const MAX_TOTAL_BYTES = 10 * 1024 * 1024;
 const MIN_FILL_MS = 3000;          // faster than this after opening the form = bot

@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <title>Maximum Radler. Minimum Regret.</title>
-<meta name="description" content="Cheapest alcoholic Radler in Garching and Munich: REWE, Lidl, Kaufland, ALDI Süd and Penny.">
+<meta name="description" content="Cheapest alcoholic Radler in Garching and Munich: REWE, Lidl, Kaufland, ALDI Süd, Penny and EDEKA.">
 <link rel="icon" href="data:,">
 <style>
 :root{--bg:#f3eefc;--fg:#2f2d36;--ic:#4a4654;--mute:#8a8596;--card:#fff;--tile:#f7f3fe;--line:#e6e0f1;--hover:#faf8ff;--acc:#6d5a9c}
@@ -110,7 +110,7 @@ input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inh
 </svg>
 <main>
 <a class="back" href="https://nastya-star.github.io/"><svg class="s"><use href="#bk"/></svg>Anastasiia</a>
-<header><h1>Maximum Radler. Minimum Regret.</h1><p class="sub">A discrete price minimization problem.</p><small class="chains">Garching &amp; Munich · REWE · Lidl · Kaufland · ALDI Süd · Penny</small></header>
+<header><h1>Maximum Radler. Minimum Regret.</h1><p class="sub">A discrete price minimization problem.</p><small class="chains">Garching &amp; Munich · REWE · Lidl · Kaufland · ALDI Süd · Penny · EDEKA</small></header>
 <div id="sent" class="card" role="status" hidden><svg><use href="#cam"/></svg><span><b>Report received</b><small>Thank you. Your report and photos were saved and will be reviewed by hand. Prices on this page don't change automatically.</small></span></div>
 <div id="cities"><p class="note">Loading prices…</p></div>
 <section class="rep" aria-labelledby="rt"><svg><use href="#cam"/></svg><span><b id="rt">Seen a different price?</b><small>Photograph the shelf tag and send it in. Every report is checked by hand.</small></span><button type="button" class="pri" id="open">Report a different price<svg><use href="#ar"/></svg></button></section>
@@ -125,7 +125,7 @@ input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inh
 <div class="fh"><span><h2 id="ft">Found a Radler price?</h2><span class="m">Take a photo. We'll handle the rest.</span></span><button type="button" id="close" aria-label="Close"><svg><use href="#cls"/></svg></button></div>
 <div id="err" role="alert"></div>
 <input class="hp" type="text" name="website" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
-<label>Supermarket<select name="Supermarket" id="sm" required><option value="">Choose…</option><option>REWE</option><option>Lidl</option><option>Kaufland</option><option>ALDI Süd</option><option>Penny</option></select></label>
+<label>Supermarket<select name="Supermarket" id="sm" required><option value="">Choose…</option><option>REWE</option><option>Lidl</option><option>Kaufland</option><option>ALDI Süd</option><option>Penny</option><option>EDEKA</option></select></label>
 <label>Store address<input name="Store_address" id="ad" required minlength="5" maxlength="200" autocomplete="street-address" placeholder="Street, postal code, city"></label>
 <fieldset><legend>Price tag photos</legend>
 <div class="pick" id="pick"><label><input class="vh" type="file" id="pcam" accept="image/jpeg,image/png" capture="environment"><svg><use href="#cam"/></svg>Take photo</label><label><input class="vh" type="file" id="plib" accept="image/jpeg,image/png" multiple><svg><use href="#lst"/></svg>Choose photos</label></div>
@@ -213,7 +213,7 @@ function render(d){
   var x=reason(r);return"<div><b>"+esc(r.brand+" "+r.product)+(x?' <span class="tag x">Excluded: '+esc(x)+"</span>":"")+"</b><small>"+esc([r.city||"Official online price · no branch",r.chain,r.branch].filter(Boolean).join(" · "))+"</small>"+facts(r)+"</div>";
  }).join(""):"<div><small>No real price records yet.</small></div>";
  var S=d.sources||{},on=[],off=[];
- for(var k in S)(S[k].enabled?on:off).push(k.replace("_sued"," Süd").replace(/^./,function(c){return c.toUpperCase()}).replace("Rewe","REWE").replace("Aldi","ALDI")+(S[k].enabled?" (last checked "+(S[k].last_success||"never")+(S[k].last_error?"; last attempt failed":"")+")":""));
+ for(var k in S)(S[k].enabled?on:off).push(k.replace("_sued"," Süd").replace(/^./,function(c){return c.toUpperCase()}).replace("Rewe","REWE").replace("Aldi","ALDI").replace("Edeka","EDEKA")+(S[k].enabled?" (last checked "+(S[k].last_success||"never")+(S[k].last_error?"; last attempt failed":"")+")":""));
  $("srcs").textContent="Automatic updates: "+(on.join(", ")||"none")+". Manual only: "+off.join(", ")+".";
 }
 fetch("data.json",{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(render)

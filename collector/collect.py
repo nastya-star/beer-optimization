@@ -18,7 +18,7 @@ DATA = Path(__file__).resolve().parent.parent / "data.json"
 UA = "beer-optimization/1.0 (+https://nastya-star.github.io/beer-optimization/)"
 KL = "https://filiale.kaufland.de"
 CITIES = {"München": "Munich", "Garching": "Garching", "Garching b. München": "Garching"}
-CHAINS = {"REWE", "Lidl", "Kaufland", "ALDI Süd", "Penny"}
+CHAINS = {"REWE", "Lidl", "Kaufland", "ALDI Süd", "Penny", "EDEKA"}
 TODAY = dt.date.today().isoformat()
 
 
