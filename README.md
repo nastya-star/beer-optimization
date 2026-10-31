@@ -66,5 +66,26 @@ original observation date, and offers drop out of the ranking once their validit
 
 ## Price reports
 
-The "Report a different price" form emails reports via FormSubmit to the owner. Reports never change
-`data.json` automatically.
+The "Report a different price" form no longer uses FormSubmit. It sends each report to a Google Apps Script
+web app owned by the site owner (source: [`apps-script/Code.gs`](apps-script/Code.gs)):
+
+- **Request:** `POST` to the `/exec` URL in `ENDPOINT` (`index.html`), body = JSON sent as
+  `Content-Type: text/plain;charset=utf-8` (avoids a CORS preflight), `credentials: "omit"`.
+  Fields: `id` (report id, reused on retries), `supermarket`, `address`, `submittedAt`, `website` (honeypot),
+  `fillMs` (time since the form was opened) and `photos` (array of `{name, type, data}` with base64 data).
+- **Receiver:** validates the fields, checks that photos really are JPG/PNG (max 10 photos, 10 MB total),
+  drops spam (filled honeypot or `fillMs` under 3 s; the page waits so real visitors are never below 3 s),
+  limits volume to 30 reports per hour and ignores duplicate ids. It saves the photos and a `report.txt` to the
+  private Drive folder "Radler price reports", then emails them to the owner (subject "New Radler Price Information").
+- **Response:** `{"ok": true, "emailed": true|false}` once the report is stored in Drive (`emailed: false` means
+  the notification email failed but the report was saved), or `{"ok": false, "error", "message"}`.
+- **Page behaviour:** success is shown only after a readable JSON answer with `ok: true`. Network errors,
+  timeouts, unreadable or opaque responses and `ok: false` show an error; the entries, photos and report id
+  are kept for a retry, and only one request can run at a time.
+
+Reports never change `data.json` automatically.
+
+Setup / redeploy: script.google.com → New project → paste `apps-script/Code.gs` → Deploy → New deployment →
+Web app (Execute as: Me, Who has access: Anyone) → authorize → copy the `/exec` URL into `ENDPOINT` in
+`index.html`. After editing the script, use Deploy → Manage deployments → Edit → New version to keep the same URL.
+Free quotas (consumer Google account): about 100 emails/day; requests up to ~50 MB.

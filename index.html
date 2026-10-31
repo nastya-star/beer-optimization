@@ -111,7 +111,7 @@ input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inh
 <main>
 <a class="back" href="https://nastya-star.github.io/"><svg class="s"><use href="#bk"/></svg>Anastasiia</a>
 <header><h1>Maximum Radler. Minimum Regret.</h1><p class="sub">A discrete price minimization problem.</p><small class="chains">Garching &amp; Munich · REWE · Lidl · Kaufland · ALDI Süd · Penny</small></header>
-<div id="sent" class="card" role="status" hidden><svg><use href="#cam"/></svg><span><b>Report submitted</b><small>Thank you. Your report was passed to the form service; if it arrives, it will be reviewed by hand. Prices on this page don't change automatically.</small></span></div>
+<div id="sent" class="card" role="status" hidden><svg><use href="#cam"/></svg><span><b>Report received</b><small>Thank you. Your report and photos were saved and will be reviewed by hand. Prices on this page don't change automatically.</small></span></div>
 <div id="cities"><p class="note">Loading prices…</p></div>
 <section class="rep" aria-labelledby="rt"><svg><use href="#cam"/></svg><span><b id="rt">Seen a different price?</b><small>Photograph the shelf tag and send it in. Every report is checked by hand.</small></span><button type="button" class="pri" id="open">Report a different price<svg><use href="#ar"/></svg></button></section>
 <details class="card"><summary><svg><use href="#lst"/></svg><span><b>All recorded Radler products <span id="cnt" class="num"></span></b><small>Including records excluded from the ranking</small></span><svg class="s"><use href="#chv"/></svg></summary><div class="list" id="all"></div></details>
@@ -121,14 +121,10 @@ input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inh
 </main>
 
 <dialog id="dlg" aria-labelledby="ft">
-<form id="f" action="https://formsubmit.co/stepanenkon010@gmail.com" method="POST" enctype="multipart/form-data" novalidate>
+<form id="f" novalidate>
 <div class="fh"><span><h2 id="ft">Found a Radler price?</h2><span class="m">Take a photo. We'll handle the rest.</span></span><button type="button" id="close" aria-label="Close"><svg><use href="#cls"/></svg></button></div>
 <div id="err" role="alert"></div>
-<input type="hidden" name="_subject" value="New Radler Price Information">
-<input type="hidden" name="_template" value="table">
-<input type="hidden" name="_next" value="https://nastya-star.github.io/beer-optimization/?sent=1">
-<input type="hidden" name="Submitted_at" id="ts">
-<input class="hp" type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+<input class="hp" type="text" name="website" id="hp" tabindex="-1" autocomplete="off" aria-hidden="true">
 <label>Supermarket<select name="Supermarket" id="sm" required><option value="">Choose…</option><option>REWE</option><option>Lidl</option><option>Kaufland</option><option>ALDI Süd</option><option>Penny</option></select></label>
 <label>Store address<input name="Store_address" id="ad" required minlength="5" maxlength="200" autocomplete="street-address" placeholder="Street, postal code, city"></label>
 <fieldset><legend>Price tag photos</legend>
@@ -136,7 +132,7 @@ input:not([type=file]),select{display:block;width:100%;margin-top:.3rem;font:inh
 <div id="fb" hidden><input type="file" name="photo_1" accept="image/jpeg,image/png" aria-label="Photo 1"><input type="file" name="photo_2" accept="image/jpeg,image/png" aria-label="Photo 2"><input type="file" name="photo_3" accept="image/jpeg,image/png" aria-label="Photo 3"></div>
 <ul class="ph" id="ph"></ul><small id="phs" aria-live="polite">JPG or PNG, up to 10 MB in total. Large photos are reduced automatically.</small>
 </fieldset>
-<p class="m">Privacy: reports are processed by the third-party service <a href="https://formsubmit.co/" rel="noopener" target="_blank">FormSubmit</a> (formsubmit.co), which emails the supermarket, address, submission time and photos to the site owner. No account needed; please keep people out of the photos. Your supermarket and address are remembered on this device only. You may be asked to complete a captcha.</p>
+<p class="m">Privacy: reports are sent to a private Google Apps Script service run by the site owner, which stores the supermarket, address, submission time and photos in the owner's private Google Drive and emails them to the owner. Nothing is published automatically. No account needed; please keep people out of the photos. Your supermarket and address are remembered on this device only.</p>
 <div class="c" style="margin-top:1rem"><button type="submit" class="pri" id="sb">Submit price</button></div>
 </form>
 </dialog>
@@ -223,18 +219,20 @@ function render(d){
 fetch("data.json",{cache:"no-cache"}).then(function(r){if(!r.ok)throw 0;return r.json()}).then(render)
  .catch(function(){$("cities").innerHTML='<p class="note">Price data could not be loaded.</p>'});
 
-/* Report form: supermarket + address + photos. Each photo gets its own named file field
-   (FormSubmit supports several file inputs, 10 MB total). Nothing here touches data.json. */
-var dlg=$("dlg"),f=$("f"),sm=$("sm"),ad=$("ad"),sb=$("sb"),P=[],MAX=10485760,
+/* Report form: supermarket + address + photos, sent as JSON to the owner's Google Apps Script
+   web app (source: apps-script/Code.gs), which validates, stores privately and emails the report.
+   Success is shown only after the server confirms. Nothing here touches data.json. */
+var ENDPOINT="https://script.google.com/macros/s/AKfycbzQQn2e_VTYzYOwKgstkJObukPZKWY2559ba_Yfj5n-UbhrusaIfaOrdgvAK7ccN-A/exec",MIN_FILL=3000,
+dlg=$("dlg"),f=$("f"),sm=$("sm"),ad=$("ad"),sb=$("sb"),P=[],MAX=10485760,
 mb=function(b){return b<104858?Math.max(1,Math.round(b/1024))+" KB":(b/1048576).toFixed(1)+" MB"},
 ok=function(x){return/^image\/(jpeg|png)$/.test(x.type)},
 canDT=(function(){try{return!!new DataTransfer().items}catch(e){return false}})();
-if(/[?&]sent=1/.test(location.search))$("sent").hidden=false;
+var RID=null,T0=Date.now(),busy=false;
 try{sm.value=localStorage.getItem("rf_sm")||"";ad.value=localStorage.getItem("rf_ad")||""}catch(e){}
 function keep(){try{localStorage.setItem("rf_sm",sm.value);localStorage.setItem("rf_ad",ad.value.trim())}catch(e){}}
 sm.onchange=ad.onchange=keep;
 if(canDT)[].forEach.call($("fb").querySelectorAll("input"),function(i){i.disabled=true});else{$("pick").hidden=true;$("fb").hidden=false}
-$("open").onclick=function(){dlg.showModal?dlg.showModal():dlg.setAttribute("open","")};
+$("open").onclick=function(){T0=Date.now();dlg.showModal?dlg.showModal():dlg.setAttribute("open","")};
 $("close").onclick=function(){dlg.close?dlg.close():dlg.removeAttribute("open")};
 /* Re-encode large photos as JPEG (max 2000 px) so several fit under 10 MB; keep the original if not smaller */
 function shrink(file){return new Promise(function(res){
@@ -258,6 +256,7 @@ function add(){var inp=this,L=[].slice.call(inp.files),bad=L.filter(function(x){
 $("pcam").onchange=$("plib").onchange=add;
 f.onsubmit=function(e){
  e.preventDefault();
+ if(busy)return;
  var E=[],F=canDT?P.map(function(x){return x.f}):[].slice.call(f.querySelectorAll("#fb input")).map(function(i){return i.files[0]}).filter(Boolean),
   t=F.reduce(function(a,x){return a+x.size},0);
  if(!sm.value)E.push("Choose the supermarket.");
@@ -269,14 +268,40 @@ f.onsubmit=function(e){
  $("err").innerHTML=E.length?"<b>Please check:</b>"+E.map(function(s){return"<div>"+esc(s)+"</div>"}).join(""):"";
  if(E.length){$("err").scrollIntoView({block:"nearest"});return}
  keep();
- var now=new Date();$("ts").value=now.toLocaleString("en-GB",{timeZone:"Europe/Berlin"})+" (Munich time) · "+now.toISOString();
- if(canDT){[].forEach.call(f.querySelectorAll(".gen"),function(i){i.remove()});
-  F.forEach(function(x,i){var inp=document.createElement("input"),dt=new DataTransfer();inp.type="file";inp.name="photo_"+(i+1);inp.className="gen hp";dt.items.add(x);inp.files=dt.files;f.appendChild(inp)})}
- else [].forEach.call(f.querySelectorAll("#fb input"),function(i){i.disabled=!i.files.length});
- sb.disabled=true;sb.textContent="Sending…";
- HTMLFormElement.prototype.submit.call(f);
+ send(F);
 };
-addEventListener("pageshow",function(){sb.disabled=false;sb.textContent="Submit price"});
+function b64(file){return new Promise(function(res,rej){var r=new FileReader();r.onload=function(){res(String(r.result).split(",")[1])};r.onerror=rej;r.readAsDataURL(file)})}
+function uid(){try{return crypto.randomUUID()}catch(e){return Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,12)}}
+function fail(msg){$("err").innerHTML="<b>Your report was not sent.</b><div>"+esc(msg)+"</div><div>Your entries and photos are still here. Please try again.</div>";$("err").scrollIntoView({block:"nearest"})}
+/* One request at a time; the same report id is reused on retry so the server never stores it twice */
+function send(F){
+ if(busy)return;busy=true;sb.disabled=true;sb.textContent="Sending…";
+ if(!RID)RID=uid();
+ var now=new Date(),ctl=window.AbortController?new AbortController():null,tm=setTimeout(function(){ctl&&ctl.abort()},90000);
+ Promise.all(F.map(b64)).then(function(D){
+  if(!ENDPOINT)throw{msg:"The report service is not configured yet."};
+  var wait=MIN_FILL+250-(Date.now()-T0);
+  return wait>0?new Promise(function(r){setTimeout(function(){r(D)},wait)}):D;
+ }).then(function(D){
+  return fetch(ENDPOINT,{method:"POST",credentials:"omit",redirect:"follow",headers:{"Content-Type":"text/plain;charset=utf-8"},signal:ctl&&ctl.signal,
+   body:JSON.stringify({id:RID,supermarket:sm.value,address:ad.value.trim(),website:$("hp").value,fillMs:Date.now()-T0,
+    submittedAt:now.toLocaleString("en-GB",{timeZone:"Europe/Berlin"})+" (Munich time) · "+now.toISOString(),
+    photos:F.map(function(x,i){return{name:x.name,type:x.type,data:D[i]}})})});
+ }).then(function(r){if(r.type==="opaque"||!r.ok)throw{msg:"The server answered with an error ("+(r.status||"no response")+")."};
+  return r.json().catch(function(){throw{msg:"The server's answer could not be read, so delivery is not confirmed."}})})
+ .then(function(j){
+  if(!j||j.ok!==true)throw{msg:j&&j.message||"The server did not accept the report."};
+  RID=null;P.forEach(function(x){URL.revokeObjectURL(x.u)});P=[];draw();
+  [].forEach.call(f.querySelectorAll("#fb input"),function(i){i.value=""});
+  $("err").innerHTML="";dlg.close?dlg.close():dlg.removeAttribute("open");
+  $("sent").querySelector("small").textContent=j.emailed===false
+   ?"Thank you. Your report and photos were saved and will be reviewed by hand, but the email notification to the site owner failed. Prices on this page don't change automatically."
+   :"Thank you. Your report and photos were saved and will be reviewed by hand. Prices on this page don't change automatically.";
+  $("sent").hidden=false;$("sent").scrollIntoView({block:"center"});
+ }).catch(function(x){
+  fail(x&&x.msg?x.msg:x&&x.name==="AbortError"?"The connection timed out.":"The connection failed. Check your internet connection.");
+ }).then(function(){clearTimeout(tm);busy=false;sb.disabled=false;sb.textContent="Submit price"});
+}
 </script>
 </body>
 </html>
